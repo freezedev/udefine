@@ -20,6 +20,8 @@
         }
       }
       return (function(factory) {
+        var dep, globalsArr, _i, _len;
+
         if (typeof define !== "undefined" && define !== null) {
           if (define.amd || define.umd) {
             return define.apply(this, arguments);
@@ -28,7 +30,12 @@
           if (hasModule) {
 
           } else {
-
+            globalsArr = [];
+            for (_i = 0, _len = deps.length; _i < _len; _i++) {
+              dep = deps[_i];
+              globalsArr.push(root.udefine.globals[dep]);
+            }
+            return factory.apply(this, globalsArr);
           }
         }
       })(factory);
