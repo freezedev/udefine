@@ -27,5 +27,7 @@ it will resolve through the AMD loader.
 If that's not the case it will call the module on the namespace provided through
 `udefine.globals[dependencyName]`.
 
+For more examples, take a look at the *examples* folder.
+
 **License**  
 This is public domain. See *UNLICENSE.md* for more information.
