@@ -20,7 +20,7 @@ do (root = module?.exports ? this) ->
       else
         if hasModule
           # Common JS
-        
+          module.exports = factory()
         else
           # Ususal browser environment
           globalsArr = []
