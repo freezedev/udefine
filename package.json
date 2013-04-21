@@ -1,0 +1,11 @@
+{
+  "name": "udefine",
+  "version": "1.0.0",
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "grunt": "0.4.x",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-uglify": "*"
+  }
+}
