@@ -3,14 +3,17 @@
 # ES 5 compability functions
 Array.isArray or= (a) -> a.push is Array.prototype.push and a.length?
 
+# Module switch
 hasModule = module? and module.exports
 
+# Root object hook
 do (root = module?.exports ? this) ->
   root.udefine = (name, deps, factory) ->
     if Array.isArray name
       [name, deps, factory] = [undefined, name, deps]
     else
-      [name, deps, factory] = [undefined, undefined, name] if typeof name is 'function'
+      if typeof name is 'function'
+        [name, deps, factory] = [undefined, undefined, name]
       
     do (factory) ->
       # Define, either AMD or UMD (if any?)
