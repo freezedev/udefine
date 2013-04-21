@@ -28,7 +28,7 @@
           }
         } else {
           if (hasModule) {
-
+            return module.exports = factory();
           } else {
             globalsArr = [];
             for (_i = 0, _len = deps.length; _i < _len; _i++) {
