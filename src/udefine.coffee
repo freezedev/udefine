@@ -23,7 +23,9 @@ do (root = module?.exports ? this) ->
         
         else
           # Ususal browser environment
+          globalsArr = []
+          
+          globalsArr.push(root.udefine.globals[dep]) for dep in deps
+          factory.apply @, globalsArr
   
   root.udefine.globals = {}
-  
-
