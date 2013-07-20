@@ -20,7 +20,7 @@
         }
       }
       return (function(factory) {
-        var dep, globalsArr, _i, _len;
+        var dep, globalsArr, requireArr;
 
         if (typeof define !== "undefined" && define !== null) {
           if (define.amd || define.umd) {
@@ -28,19 +28,35 @@
           }
         } else {
           if (hasModule) {
-            return module.exports = factory();
+            requireArr = (function() {
+              var _i, _len, _results;
+
+              _results = [];
+              for (_i = 0, _len = deps.length; _i < _len; _i++) {
+                dep = deps[_i];
+                _results.push(require(root.udefine.node[dep]));
+              }
+              return _results;
+            })();
+            return module.exports = factory.apply(this);
           } else {
-            globalsArr = [];
-            for (_i = 0, _len = deps.length; _i < _len; _i++) {
-              dep = deps[_i];
-              globalsArr.push(root.udefine.globals[dep]);
-            }
+            globalsArr = (function() {
+              var _i, _len, _results;
+
+              _results = [];
+              for (_i = 0, _len = deps.length; _i < _len; _i++) {
+                dep = deps[_i];
+                _results.push(root.udefine.globals[dep]);
+              }
+              return _results;
+            })();
             return factory.apply(this, globalsArr);
           }
         }
       })(factory);
     };
-    return root.udefine.globals = {};
+    root.udefine.globals = {};
+    return root.udefine.node = {};
   })((_ref = typeof module !== "undefined" && module !== null ? module.exports : void 0) != null ? _ref : this);
 
 }).call(this);
