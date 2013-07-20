@@ -10,10 +10,10 @@ hasModule = module? and module.exports
 do (root = module?.exports ? this) ->
   root.udefine = (name, deps, factory) ->
     if Array.isArray name
-      [name, deps, factory] = [undefined, name, deps]
+      [name, deps, factory] = [undefined, [], deps]
     else
       if typeof name is 'function'
-        [name, deps, factory] = [undefined, undefined, name]
+        [name, deps, factory] = [undefined, [], name]
       
     # Define, either AMD or UMD (if any?)
     if define?
