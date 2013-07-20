@@ -15,21 +15,21 @@ do (root = module?.exports ? this) ->
       if typeof name is 'function'
         [name, deps, factory] = [undefined, undefined, name]
       
-    do (factory) ->
-      # Define, either AMD or UMD (if any?)
-      if define?
-        if define.amd or define.umd
-          define.apply @, arguments
+    # Define, either AMD or UMD (if any?)
+    if define?
+      if define.amd or define.umd
+        result = define.apply @, arguments
+    else
+      if hasModule
+        requireArr = (require(root.udefine.node[dep]) for dep in deps)
+        
+        # Common JS
+        result = module.exports = factory.apply @
       else
-        if hasModule
-          requireArr = (require(root.udefine.node[dep]) for dep in deps)
-          
-          # Common JS
-          module.exports = factory.apply @
-        else
-          # Usual browser environment
-          globalsArr = (root.udefine.globals[dep] for dep in deps)
-          factory.apply @, globalsArr
+        # Usual browser environment
+        globalsArr = (root.udefine.globals[dep] for dep in deps)
+        result = factory.apply @, globalsArr
+    result
   
   root.udefine.globals = {}
   root.udefine.node = {}
