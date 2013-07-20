@@ -22,13 +22,14 @@ do (root = module?.exports ? this) ->
           define.apply @, arguments
       else
         if hasModule
-          # Common JS
-          module.exports = factory()
-        else
-          # Ususal browser environment
-          globalsArr = []
+          requireArr = (require(root.udefine.node[dep]) for dep in deps)
           
-          globalsArr.push(root.udefine.globals[dep]) for dep in deps
+          # Common JS
+          module.exports = factory.apply @
+        else
+          # Usual browser environment
+          globalsArr = (root.udefine.globals[dep] for dep in deps)
           factory.apply @, globalsArr
   
   root.udefine.globals = {}
+  root.udefine.node = {}
