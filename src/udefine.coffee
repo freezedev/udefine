@@ -8,7 +8,7 @@ hasModule = module? and module.exports
 
 # Root object hook
 do (root = module?.exports ? this) ->
-  root.udefine = (name, deps, factory) ->
+  root.udefine or= (name, deps, factory) ->
     if Array.isArray name
       [name, deps, factory] = [undefined, [], deps]
     else
@@ -31,5 +31,7 @@ do (root = module?.exports ? this) ->
         result = factory.apply @, globalsArr
     result
   
-  root.udefine.globals = {}
-  root.udefine.node = {}
+  root.udefine.globals or= {}
+  root.udefine.commonjs or= {}
+  
+  null
