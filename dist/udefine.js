@@ -9,7 +9,9 @@
   hasModule = (typeof module !== "undefined" && module !== null) && module.exports;
 
   (function(root) {
-    root.udefine = function(name, deps, factory) {
+    var _base, _base1;
+
+    root.udefine || (root.udefine = function(name, deps, factory) {
       var dep, globalsArr, requireArr, result, _ref1, _ref2;
 
       if (Array.isArray(name)) {
@@ -51,9 +53,10 @@
         }
       }
       return result;
-    };
-    root.udefine.globals = {};
-    return root.udefine.node = {};
+    });
+    (_base = root.udefine).globals || (_base.globals = {});
+    (_base1 = root.udefine).commonjs || (_base1.commonjs = {});
+    return null;
   })((_ref = typeof module !== "undefined" && module !== null ? module.exports : void 0) != null ? _ref : this);
 
 }).call(this);
