@@ -10,7 +10,7 @@
 
   (function(root) {
     root.udefine = function(name, deps, factory) {
-      var _ref1, _ref2;
+      var dep, globalsArr, requireArr, result, _ref1, _ref2;
 
       if (Array.isArray(name)) {
         _ref1 = [void 0, name, deps], name = _ref1[0], deps = _ref1[1], factory = _ref1[2];
@@ -19,41 +19,38 @@
           _ref2 = [void 0, void 0, name], name = _ref2[0], deps = _ref2[1], factory = _ref2[2];
         }
       }
-      return (function(factory) {
-        var dep, globalsArr, requireArr;
-
-        if (typeof define !== "undefined" && define !== null) {
-          if (define.amd || define.umd) {
-            return define.apply(this, arguments);
-          }
-        } else {
-          if (hasModule) {
-            requireArr = (function() {
-              var _i, _len, _results;
-
-              _results = [];
-              for (_i = 0, _len = deps.length; _i < _len; _i++) {
-                dep = deps[_i];
-                _results.push(require(root.udefine.node[dep]));
-              }
-              return _results;
-            })();
-            return module.exports = factory.apply(this);
-          } else {
-            globalsArr = (function() {
-              var _i, _len, _results;
-
-              _results = [];
-              for (_i = 0, _len = deps.length; _i < _len; _i++) {
-                dep = deps[_i];
-                _results.push(root.udefine.globals[dep]);
-              }
-              return _results;
-            })();
-            return factory.apply(this, globalsArr);
-          }
+      if (typeof define !== "undefined" && define !== null) {
+        if (define.amd || define.umd) {
+          result = define.apply(this, arguments);
         }
-      })(factory);
+      } else {
+        if (hasModule) {
+          requireArr = (function() {
+            var _i, _len, _results;
+
+            _results = [];
+            for (_i = 0, _len = deps.length; _i < _len; _i++) {
+              dep = deps[_i];
+              _results.push(require(root.udefine.node[dep]));
+            }
+            return _results;
+          })();
+          result = module.exports = factory.apply(this);
+        } else {
+          globalsArr = (function() {
+            var _i, _len, _results;
+
+            _results = [];
+            for (_i = 0, _len = deps.length; _i < _len; _i++) {
+              dep = deps[_i];
+              _results.push(root.udefine.globals[dep]);
+            }
+            return _results;
+          })();
+          result = factory.apply(this, globalsArr);
+        }
+      }
+      return result;
     };
     root.udefine.globals = {};
     return root.udefine.node = {};
