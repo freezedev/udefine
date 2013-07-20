@@ -13,10 +13,10 @@
       var dep, globalsArr, requireArr, result, _ref1, _ref2;
 
       if (Array.isArray(name)) {
-        _ref1 = [void 0, name, deps], name = _ref1[0], deps = _ref1[1], factory = _ref1[2];
+        _ref1 = [void 0, [], deps], name = _ref1[0], deps = _ref1[1], factory = _ref1[2];
       } else {
         if (typeof name === 'function') {
-          _ref2 = [void 0, void 0, name], name = _ref2[0], deps = _ref2[1], factory = _ref2[2];
+          _ref2 = [void 0, [], name], name = _ref2[0], deps = _ref2[1], factory = _ref2[2];
         }
       }
       if (typeof define !== "undefined" && define !== null) {
