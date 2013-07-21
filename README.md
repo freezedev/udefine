@@ -27,7 +27,7 @@ it will resolve through the AMD loader.
 If that's not the case it will call the module on the namespace provided through
 `udefine.globals[dependencyName]`.
 
-udefine is not and does not replace a module loader. It is primarily for
+udefine is not and does not replace a module loader. It is primarily intended for
 developers who want their library to target AMD modules, CommonJS modules and/or
 the classic way of binding object to the global window object.
 
