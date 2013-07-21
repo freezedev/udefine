@@ -18,16 +18,20 @@ do (root = module?.exports ? this) ->
     # Define, either AMD or UMD (if any?)
     if define?
       if define.amd or define.umd
+        udefine.env.amd = true
         result = define.apply @, arguments
     else
       if hasModule
         requireArr = (require(root.udefine.node[dep]) for dep in deps)
         
         # Common JS
+        udefine.env.commonjs = true
         result = module.exports = factory.apply @
       else
         # Usual browser environment
         globalsArr = (root.udefine.globals[dep] for dep in deps)
+        
+        udefine.env.browser = true
         result = factory.apply @, globalsArr
     result
   
