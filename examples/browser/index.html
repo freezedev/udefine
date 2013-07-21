@@ -39,6 +39,9 @@
       
       udefine('submodule', ['mymodule'], function(mymodule) {
         mymodule.submodule = 50;
+        
+        // Update reference to submodule
+        udefine.globals['submodule'] = udefine.globals['mymodule'].submodule;
       });
       
       udefine('doublethefun', ['submodule', 'myothermodule'], function(submodule, myothermodule) {
