@@ -23,6 +23,7 @@
       }
       if (typeof define !== "undefined" && define !== null) {
         if (define.amd || define.umd) {
+          udefine.env.amd = true;
           result = define.apply(this, arguments);
         }
       } else {
@@ -37,6 +38,7 @@
             }
             return _results;
           })();
+          udefine.env.commonjs = true;
           result = module.exports = factory.apply(this);
         } else {
           globalsArr = (function() {
@@ -49,6 +51,7 @@
             }
             return _results;
           })();
+          udefine.env.browser = true;
           result = factory.apply(this, globalsArr);
         }
       }
