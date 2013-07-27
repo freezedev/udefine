@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var hasModule, _ref;
+  var hasModule;
 
   hasModule = (typeof module !== "undefined" && module !== null) && module.exports;
 
@@ -8,13 +8,13 @@
     var _base, _base1, _base2;
 
     root.udefine || (root.udefine = function(name, deps, factory) {
-      var dep, globalsArr, requireArr, result, _ref1;
+      var dep, globalsArr, requireArr, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
       }
       if (typeof deps === 'function') {
-        _ref1 = [name, [], deps], name = _ref1[0], deps = _ref1[1], factory = _ref1[2];
+        _ref = [name, [], deps], name = _ref[0], deps = _ref[1], factory = _ref[2];
       }
       if (typeof define !== "undefined" && define !== null) {
         if (define.amd || define.umd) {
@@ -60,6 +60,6 @@
       browser: false
     });
     return null;
-  })((_ref = typeof module !== "undefined" && module !== null ? module.exports : void 0) != null ? _ref : this);
+  })(hasModule ? typeof global !== "undefined" && global !== null ? global : this : void 0);
 
 }).call(this);
