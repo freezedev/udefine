@@ -1,19 +1,14 @@
 'use strict'
 
-# ES 5 compability functions
-Array.isArray or= (a) -> a.push is Array.prototype.push and a.length?
-
 # Module switch
 hasModule = module? and module.exports
 
 # Root object hook
 do (root = module?.exports ? this) ->
   root.udefine or= (name, deps, factory) ->
-    if Array.isArray name
-      [name, deps, factory] = [undefined, [], deps]
-    else
-      if typeof name is 'function'
-        [name, deps, factory] = [undefined, [], name]
+    throw new Error 'A udefine module needs to have a name' unless name?
+    
+    [name, deps, factory] = [name, [], deps] if typeof deps is 'function'
       
     # Define, either AMD or UMD (if any?)
     if define?
@@ -37,5 +32,9 @@ do (root = module?.exports ? this) ->
   
   root.udefine.globals or= {}
   root.udefine.commonjs or= {}
+  root.udefine.env or= 
+    amd: false
+    commonjs: false
+    browser: false
   
   null
