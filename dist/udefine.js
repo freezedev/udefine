@@ -60,6 +60,6 @@
       browser: false
     });
     return null;
-  })(hasModule ? typeof global !== "undefined" && global !== null ? global : this : void 0);
+  })(hasModule ? global : this);
 
 }).call(this);
