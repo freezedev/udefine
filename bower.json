@@ -1,0 +1,26 @@
+{
+  "name": "udefine",
+  "version": "0.7.0",
+  "homepage": "https://github.com/freezedev/udefine",
+  "authors": [
+    "Johannes Stein <johannesstein@freeze-dev.com>"
+  ],
+  "description": "UMD module wrapper",
+  "main": "dist/udefine.js",
+  "keywords": [
+    "umd",
+    "amd",
+    "global",
+    "object"
+  ],
+  "license": "UNLICENSE",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "examples",
+    "src"
+  ]
+}
