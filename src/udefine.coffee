@@ -26,7 +26,7 @@ do (root = if hasModule then global else this) ->
         # Usual browser environment
         globalsArr = (root.udefine.globals[dep] for dep in deps)
         
-        result = factory.apply @, globalsArr
+        result = root.udefine.globals[name] = factory.apply @, globalsArr
     result
   
   root.udefine.globals or= {}
