@@ -32,7 +32,7 @@
             }
             return _results;
           })();
-          result = module.exports = factory.apply(this);
+          result = module.exports = factory.apply(this, requireArr);
         } else {
           globalsArr = (function() {
             var _i, _len, _results;

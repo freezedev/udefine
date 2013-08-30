@@ -21,7 +21,7 @@ do (root = if hasModule then global else this) ->
         requireArr = (require(root.udefine.node[dep]) for dep in deps)
         
         # Common JS
-        result = module.exports = factory.apply @
+        result = module.exports = factory.apply @, requireArr
       else
         # Usual browser environment
         globalsArr = (root.udefine.globals[dep] for dep in deps)
