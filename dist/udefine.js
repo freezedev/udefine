@@ -44,7 +44,10 @@
             }
             return _results;
           })();
-          result = root.udefine.globals[name] = factory.apply(this, globalsArr);
+          result = factory.apply(this, globalsArr);
+          if (root.udefine.globals[name] != null) {
+            root.udefine.globals[name] = result;
+          }
         }
       }
       return result;
