@@ -36,4 +36,13 @@ do (root = if hasModule then global else this) ->
     commonjs: hasModule
     browser: not hasModule
   
+  # Default configuration definition
+  root.udefine.defaultConfig = ->
+    root.udefine.globals.root or= root;
+  
+    define('root', -> root) if root.define?
+  
+  # Call default configuration
+  root.udefine.defaultConfig()
+  
   null

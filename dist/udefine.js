@@ -58,6 +58,17 @@
       commonjs: hasModule,
       browser: !hasModule
     });
+    root.udefine.defaultConfig = function() {
+      var _base3;
+
+      (_base3 = root.udefine.globals).root || (_base3.root = root);
+      if (root.define != null) {
+        return define('root', function() {
+          return root;
+        });
+      }
+    };
+    root.udefine.defaultConfig();
     return null;
   })(hasModule ? global : this);
 
