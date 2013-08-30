@@ -18,7 +18,6 @@
       }
       if (typeof define !== "undefined" && define !== null) {
         if (define.amd || define.umd) {
-          udefine.env.amd = true;
           result = define.apply(this, arguments);
         }
       } else {
@@ -33,7 +32,6 @@
             }
             return _results;
           })();
-          udefine.env.commonjs = true;
           result = module.exports = factory.apply(this);
         } else {
           globalsArr = (function() {
@@ -46,7 +44,6 @@
             }
             return _results;
           })();
-          udefine.env.browser = true;
           result = factory.apply(this, globalsArr);
         }
       }
@@ -55,9 +52,15 @@
     (_base = root.udefine).globals || (_base.globals = {});
     (_base1 = root.udefine).commonjs || (_base1.commonjs = {});
     (_base2 = root.udefine).env || (_base2.env = {
-      amd: false,
-      commonjs: false,
-      browser: false
+      amd: (function() {
+        return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
+      })(),
+      commonjs: (function() {
+        return hasModule;
+      })(),
+      browser: (function() {
+        return !hasModule;
+      })()
     });
     return null;
   })(hasModule ? global : this);
