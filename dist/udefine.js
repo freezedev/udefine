@@ -44,7 +44,7 @@
             }
             return _results;
           })();
-          result = factory.apply(this, globalsArr);
+          result = root.udefine.globals[name] = factory.apply(this, globalsArr);
         }
       }
       return result;
