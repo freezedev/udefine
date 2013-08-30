@@ -55,12 +55,8 @@
       amd: (function() {
         return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
       })(),
-      commonjs: (function() {
-        return hasModule;
-      })(),
-      browser: (function() {
-        return !hasModule;
-      })()
+      commonjs: hasModule,
+      browser: !hasModule
     });
     return null;
   })(hasModule ? global : this);

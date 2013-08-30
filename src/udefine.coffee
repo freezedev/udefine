@@ -33,7 +33,7 @@ do (root = if hasModule then global else this) ->
   root.udefine.commonjs or= {}
   root.udefine.env or= 
     amd: do -> define? and (define.amd or define.umd)
-    commonjs: do -> hasModule
-    browser: do -> not hasModule
+    commonjs: hasModule
+    browser: not hasModule
   
   null
