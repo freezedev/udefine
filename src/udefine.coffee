@@ -27,7 +27,9 @@ do (root = if hasModule then global else this) ->
         globalsArr = (root.udefine.globals[dep] for dep in deps)
         
         result = factory.apply @, globalsArr
-        root.udefine.globals[name] = result if root.udefine.globals[name]?
+        
+        if Object.hasOwnProperty.call root.udefine.globals, name
+          root.udefine.globals[name] = result
     result
   
   root.udefine.globals or= {}
