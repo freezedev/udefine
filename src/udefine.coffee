@@ -64,4 +64,8 @@ do (root = if hasModule then global else this) ->
   # Call default configuration
   root.udefine.defaultConfig()
   
+  # Configuration helper function
+  root.udefine.configure = (configFunc) ->
+    configFunc.apply root.udefine, [root.udefine]
+  
   null
