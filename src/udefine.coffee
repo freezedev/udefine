@@ -32,9 +32,10 @@ do (root = if hasModule then global else this) ->
           root.udefine.globals[name] = result
           
         if Object.hasOwnProperty.call root.udefine.inject, name
-          do (injectName = name, origRoot = root) ->
-            {name, root} = root.udefine[injectName]
-            origRoot.udefine.inject(root, name)(result)
+          injectName = root.udefine.inject[name].name
+          injectRoot = root.udefine.inject[name].root
+          
+          root.udefine.inject(injectRoot, injectName)(result)
     result
   
   root.udefine.inject = (obj, name) -> (res) -> obj[name] = res
