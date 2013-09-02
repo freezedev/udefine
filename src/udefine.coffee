@@ -30,7 +30,14 @@ do (root = if hasModule then global else this) ->
         
         if Object.hasOwnProperty.call root.udefine.globals, name
           root.udefine.globals[name] = result
+          
+        if Object.hasOwnProperty.call root.udefine.inject, name
+          do (injectName = name, origRoot = root) ->
+            {name, root} = root.udefine[injectName]
+            origRoot.udefine.inject(root, name)(result)
     result
+  
+  root.udefine.inject = (obj, name) -> (res) -> obj[name] = res
   
   root.udefine.globals or= {}
   root.udefine.commonjs or= {}
