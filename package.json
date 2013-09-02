@@ -7,5 +7,9 @@
     "grunt": "0.4.x",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-uglify": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freezedev/udefine.git"
   }
 }
