@@ -48,10 +48,23 @@
           if (Object.hasOwnProperty.call(root.udefine.globals, name)) {
             root.udefine.globals[name] = result;
           }
+          if (Object.hasOwnProperty.call(root.udefine.inject, name)) {
+            (function(injectName, origRoot) {
+              var _ref1;
+
+              _ref1 = root.udefine[injectName], name = _ref1.name, root = _ref1.root;
+              return origRoot.udefine.inject(root, name)(result);
+            })(name, root);
+          }
         }
       }
       return result;
     });
+    root.udefine.inject = function(obj, name) {
+      return function(res) {
+        return obj[name] = res;
+      };
+    };
     (_base = root.udefine).globals || (_base.globals = {});
     (_base1 = root.udefine).commonjs || (_base1.commonjs = {});
     (_base2 = root.udefine).env || (_base2.env = {
