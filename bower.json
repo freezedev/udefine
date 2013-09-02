@@ -1,6 +1,6 @@
 {
   "name": "udefine",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "homepage": "https://github.com/freezedev/udefine",
   "authors": [
     "Johannes Stein <johannesstein@freeze-dev.com>"
@@ -21,6 +21,7 @@
     "test",
     "tests",
     "examples",
-    "src"
+    "src",
+    "gruntfile.coffee"
   ]
 }
