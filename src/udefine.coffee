@@ -28,9 +28,11 @@ do (root = if hasModule then global else this) ->
         
         result = factory.apply @, globalsArr
         
-        if Object.hasOwnProperty.call root.udefine.globals, name
+        # Set dependency if it does not exist
+        unless Object.hasOwnProperty.call root.udefine.globals, name
           root.udefine.globals[name] = result
-          
+        
+        # Inject result into defined namespace
         if Object.hasOwnProperty.call root.udefine.inject, name
           injectName = root.udefine.inject[name].name
           injectRoot = root.udefine.inject[name].root
@@ -38,10 +40,16 @@ do (root = if hasModule then global else this) ->
           root.udefine.inject(injectRoot, injectName)(result)
     result
   
+  # Helper function to inject function/object into any object
   root.udefine.inject = (obj, name) -> (res) -> obj[name] = res
   
+  # Dependencies for browser (global object)
   root.udefine.globals or= {}
+  
+  # Dependencies for node.js or commonjs environments
   root.udefine.commonjs or= {}
+  
+  # Default settings for udefine environment
   root.udefine.env or= 
     amd: do -> define? and (define.amd or define.umd)
     commonjs: hasModule
