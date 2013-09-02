@@ -82,6 +82,9 @@
       }
     };
     root.udefine.defaultConfig();
+    root.udefine.configure = function(configFunc) {
+      return configFunc.apply(root.udefine, [root.udefine]);
+    };
     return null;
   })(hasModule ? global : this);
 
