@@ -45,7 +45,7 @@
             return _results;
           })();
           result = factory.apply(this, globalsArr);
-          if (Object.hasOwnProperty.call(root.udefine.globals, name)) {
+          if (!Object.hasOwnProperty.call(root.udefine.globals, name)) {
             root.udefine.globals[name] = result;
           }
           if (Object.hasOwnProperty.call(root.udefine.inject, name)) {
