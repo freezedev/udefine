@@ -7,7 +7,7 @@ Define a module as an AMD module and handle it as if it's an UMD module
 * Provides a handy function wrapper for UMD modules
 * Same fuction signature as AMD modules
 * No need for boilerplate definitions
-* Less than 0.3 kB minified and gzipped
+* Less than 0.4 kB minified and gzipped
 
 **Usage**  
 ```javascript
@@ -16,7 +16,7 @@ Define a module as an AMD module and handle it as if it's an UMD module
   root.udefine.globals.jquery = this.jQuery;
 })(this);
 
-udefine('myModule', ['jquery'], function($) {
+udefine('mymodule', ['jquery'], function($) {
   $.fn.myModule = function() { /* ... */ };
 });
 ```
@@ -24,8 +24,29 @@ udefine('myModule', ['jquery'], function($) {
 If an AMD module loader like RequireJS has been integrated and configured, 
 it will resolve through the AMD loader.
 
-If that's not the case it will call the module on the namespace provided through
-`udefine.globals[dependencyName]`.
+
+Alright, that's really great for jQuery modules. But what if you want to bind
+a module the global namespace if there is no AMD or CommonJS.
+
+```javascript
+(function(root) {
+  root.udefine.inject['myothermodule'] = {
+    root: root,
+    name: 'myOtherModule'
+  };
+})(this);
+
+udefine('myothermodule', function() {
+  return {
+    a: function() { return 5; },
+    b: 2
+  };
+});
+
+// root.myOtherModule now is an object with the properties a and b.
+// (In a non-AMD or non-CommonJS environment.)
+```
+
 
 udefine is not and does not replace a module loader. It is primarily intended for
 developers who want their library to target AMD modules, CommonJS modules and/or
