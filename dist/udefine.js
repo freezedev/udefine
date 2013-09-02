@@ -8,7 +8,7 @@
     var _base, _base1, _base2;
 
     root.udefine || (root.udefine = function(name, deps, factory) {
-      var dep, globalsArr, requireArr, result, _ref;
+      var dep, globalsArr, injectName, injectRoot, requireArr, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -49,12 +49,9 @@
             root.udefine.globals[name] = result;
           }
           if (Object.hasOwnProperty.call(root.udefine.inject, name)) {
-            (function(injectName, origRoot) {
-              var _ref1;
-
-              _ref1 = root.udefine[injectName], name = _ref1.name, root = _ref1.root;
-              return origRoot.udefine.inject(root, name)(result);
-            })(name, root);
+            injectName = root.udefine.inject[name].name;
+            injectRoot = root.udefine.inject[name].root;
+            root.udefine.inject(injectRoot, injectName)(result);
           }
         }
       }
