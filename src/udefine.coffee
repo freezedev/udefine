@@ -65,6 +65,8 @@ do (root = if hasModule then global else this) ->
   root.udefine.defaultConfig()
   
   # Configuration helper function
+  # TODO: Provide access to root object
+  # TODO: CommonJS compability
   root.udefine.configure = (configFunc) ->
     configFunc.apply root.udefine, [root.udefine]
   
