@@ -18,7 +18,13 @@ do (root = if hasModule then global else this) ->
       result = define.apply @, arguments if define.amd or define.umd
     else
       if hasModule
-        requireArr = (require(root.udefine.node[dep]) for dep in deps)
+        requireArr = []
+        
+        for dep in deps
+          if typeof root.udefine.node[dep] is 'string'
+            requireArr.push require(root.udefine.node[dep])
+          else
+            requireArr.push root.udefine.node[dep]
         
         # Common JS
         result = module.exports = factory.apply @, requireArr
@@ -68,4 +74,5 @@ do (root = if hasModule then global else this) ->
   root.udefine.configure = (configFunc) ->
     configFunc.apply root.udefine, [if hasModule then {} else root]
   
-  null
+  
+  module.exports = root.udefine
