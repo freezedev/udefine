@@ -8,7 +8,7 @@
     var _base, _base1, _base2;
 
     root.udefine || (root.udefine = function(name, deps, factory) {
-      var dep, globalsArr, injectName, injectRoot, requireArr, result, _ref;
+      var dep, globalsArr, injectName, injectRoot, requireArr, result, _i, _len, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -22,24 +22,23 @@
         }
       } else {
         if (hasModule) {
-          requireArr = (function() {
-            var _i, _len, _results;
-
-            _results = [];
-            for (_i = 0, _len = deps.length; _i < _len; _i++) {
-              dep = deps[_i];
-              _results.push(require(root.udefine.node[dep]));
+          requireArr = [];
+          for (_i = 0, _len = deps.length; _i < _len; _i++) {
+            dep = deps[_i];
+            if (typeof root.udefine.node[dep] === 'string') {
+              requireArr.push(require(root.udefine.node[dep]));
+            } else {
+              requireArr.push(root.udefine.node[dep]);
             }
-            return _results;
-          })();
+          }
           result = module.exports = factory.apply(this, requireArr);
         } else {
           globalsArr = (function() {
-            var _i, _len, _results;
+            var _j, _len1, _results;
 
             _results = [];
-            for (_i = 0, _len = deps.length; _i < _len; _i++) {
-              dep = deps[_i];
+            for (_j = 0, _len1 = deps.length; _j < _len1; _j++) {
+              dep = deps[_j];
               _results.push(root.udefine.globals[dep]);
             }
             return _results;
@@ -85,7 +84,7 @@
     root.udefine.configure = function(configFunc) {
       return configFunc.apply(root.udefine, [hasModule ? {} : root]);
     };
-    return null;
+    return module.exports = root.udefine;
   })(hasModule ? global : this);
 
 }).call(this);
