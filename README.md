@@ -10,7 +10,7 @@ Define a module as an AMD module and handle it as if it's an UMD module
 * Provides a handy function wrapper for UMD modules
 * Same fuction signature as AMD modules
 * No need for boilerplate definitions
-* Less than 0.4 kB minified and gzipped
+* Less than 0.5 kB minified and gzipped
 
 **Usage**  
 ```javascript
