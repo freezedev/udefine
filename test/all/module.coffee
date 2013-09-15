@@ -26,3 +26,15 @@ describe 'udefine module definition', ->
     expect(resProp).to.have.property('a')
     expect(resProp).to.have.property('b')
     expect(resProp).to.have.property('c')
+
+  it 'udefine without dependencies (function factory)', ->
+    udefine 'def', -> 42
+    
+    resProp = do ->
+      if hasModule
+        udefine.commonjs.def
+      else
+        udefine.globals.def
+    
+    expect(resProp).to.be.a('number')
+    expect(resProp).to.equal(42)
