@@ -21,10 +21,10 @@ do (root = if hasModule then exportObject else this) ->
         requireArr = []
         
         for dep in deps
-          if typeof root.udefine.node[dep] is 'string'
-            requireArr.push require(root.udefine.node[dep])
+          if typeof root.udefine.commonjs[dep] is 'string'
+            requireArr.push require(root.udefine.commonjs[dep])
           else
-            requireArr.push root.udefine.node[dep]
+            requireArr.push root.udefine.commonjs[dep]
         
         # Common JS
         result = module.exports = factory.apply @, requireArr
