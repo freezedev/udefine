@@ -14,7 +14,8 @@
     "grunt-mocha": "*",
     "grunt-coffeelint": "*",
     "grunt-templater": "*",
-    "matchdep": "*"
+    "matchdep": "*",
+    "handlebars": "*"
   },
   "repository": {
     "type": "git",
