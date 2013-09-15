@@ -1,8 +1,7 @@
 'use strict'
 
 # ES5 shims
-do ->
-  Array.isArray ?= (a) -> a.push is Array.prototype.push and a.length?
+do -> Array.isArray ?= (a) -> a.push is Array.prototype.push and a.length?
 
 # Module switch
 hasModule = module? and module.exports?
@@ -57,12 +56,13 @@ do (root = if hasModule then exportObject else this) ->
         unless Object.hasOwnProperty.call root.udefine.globals, name
           root.udefine.globals[name] = result
         
-        # Inject result into defined namespace
-        if Object.hasOwnProperty.call root.udefine.inject, name
-          injectName = root.udefine.inject[name].name
-          injectRoot = root.udefine.inject[name].root
-          
-          root.udefine.inject(injectRoot, injectName)(result)
+        
+      # Inject result into defined namespace
+      if Object.hasOwnProperty.call root.udefine.inject, name
+        injectName = root.udefine.inject[name].name
+        injectRoot = root.udefine.inject[name].root
+        
+        root.udefine.inject(injectRoot, injectName)(result)
     result
   
   # Helper function to inject function/object into any object
