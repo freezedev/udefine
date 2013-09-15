@@ -11,7 +11,9 @@
     "umd",
     "amd",
     "global",
-    "object"
+    "browser",
+    "commonjs",
+    "node"
   ],
   "license": "UNLICENSE",
   "ignore": [
