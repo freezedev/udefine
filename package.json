@@ -13,6 +13,7 @@
     "grunt-mocha-test": "*",
     "grunt-mocha": "*",
     "grunt-coffeelint": "*",
+    "grunt-templater": "*",
     "matchdep": "*"
   },
   "repository": {
