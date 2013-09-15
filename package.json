@@ -8,7 +8,10 @@
     "chai": "*",
     "grunt": "0.4.x",
     "grunt-contrib-coffee": "*",
-    "grunt-contrib-uglify": "*"
+    "grunt-contrib-uglify": "*",
+    "grunt-mocha-test": "*",
+    "grunt-coffeelint": "*",
+    "matchdep": "*"
   },
   "repository": {
     "type": "git",
