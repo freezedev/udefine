@@ -1,4 +1,4 @@
-hasModule = module? and module.exports
+hasModule = module? and module.exports?
 
 if hasModule
   udefine = require '../../dist/udefine'
