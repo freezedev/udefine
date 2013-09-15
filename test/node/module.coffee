@@ -11,8 +11,6 @@ describe 'udefine commonjs dependencies', ->
       dep2: './dep2'
       
     udefine 'nodetest', ['dep1', 'dep2'], (dep1, dep2) ->
-      console.log arguments
-      
       expect(dep1).to.be.a('object')
       expect(dep1).to.have.property('number')
       
