@@ -73,6 +73,8 @@ do (root = if hasModule then exportObject else this) ->
     return unless obj? and name?
     obj[name] = res
   
+  root.udefine.inject.add = (name) -> root.udefine.inject[name] = undefined
+  
   # Dependencies for browser (global object)
   root.udefine.globals or= {}
   
