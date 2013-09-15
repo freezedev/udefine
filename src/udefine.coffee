@@ -53,14 +53,14 @@ do (root = if hasModule then module.exports else this) ->
   root.udefine.commonjs or= {}
   
   # Default settings for udefine environment
-  root.udefine.env or= 
+  root.udefine.env or=
     amd: do -> define? and (define.amd or define.umd)
     commonjs: hasModule
     browser: not hasModule
   
   # Default configuration definition
   root.udefine.defaultConfig = ->
-    root.udefine.globals.root or= root;
+    root.udefine.globals.root or= root
   
     define('root', -> root) if root.define?
   
