@@ -31,6 +31,11 @@ module.exports = (grunt) ->
         reporter: 'spec'
       test:
         src: ['test/**/*.js']
+    mocha:
+      options:
+        reporter: 'Spec'
+        run: true
+      all: ['test/browser/*.html']
     coffeelint:
       app: ['src/*.coffee'],
       tests: ['test/*.coffee'],
@@ -38,5 +43,5 @@ module.exports = (grunt) ->
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
   
-  grunt.registerTask 'test', ['coffeelint', 'mochaTest']
+  grunt.registerTask 'test', ['coffeelint', 'mochaTest', 'mocha']
   grunt.registerTask 'default', 'Default task', ['coffee', 'uglify', 'test']
