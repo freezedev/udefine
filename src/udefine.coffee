@@ -7,18 +7,21 @@ do -> Array.isArray ?= (a) -> a.push is Array.prototype.push and a.length?
 hasModule = module? and module.exports?
 exportObject = {}
 
+# Safe way to test against an object without array being a false positive
 isObject = (obj) -> typeof obj is 'object' and not Array.isArray(obj)
 
 # Root object hook
 do (root = if hasModule then exportObject else this) ->
   rootExport = if hasModule then {} else root
   
+  # Helper function to resolve a module (either function or object)
   resolveModule = (factory, deps) ->
     if typeof factory is 'function'
       factory.apply @, deps
     else
       factory
   
+  # Main entry point
   root.udefine or= (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
@@ -44,7 +47,6 @@ do (root = if hasModule then exportObject else this) ->
             requireArr.push root.udefine.commonjs[dep]
         
         # Common JS
-        
         result = module.exports = resolveModule factory, requireArr
       else
         # Usual browser environment
@@ -57,12 +59,13 @@ do (root = if hasModule then exportObject else this) ->
           root.udefine.globals[name] = result
         
         
-      # Inject result into defined namespace
-      if Object.hasOwnProperty.call root.udefine.inject, name
-        injectName = root.udefine.inject[name].name
-        injectRoot = root.udefine.inject[name].root
+    # Inject result into defined namespace
+    if Object.hasOwnProperty.call root.udefine.inject, name
+      injectName = root.udefine.inject[name].name
+      injectRoot = root.udefine.inject[name].root
+      
+      root.udefine.inject(injectRoot, injectName)(result)
         
-        root.udefine.inject(injectRoot, injectName)(result)
     result
   
   # Helper function to inject function/object into any object
