@@ -1,7 +1,7 @@
 'use strict'
 
 # Module switch
-hasModule = module? and module.exports
+hasModule = module? and module.exports?
 exportObject = {}
 
 # Root object hook
