@@ -6,6 +6,8 @@ exportObject = {}
 
 # Root object hook
 do (root = if hasModule then exportObject else this) ->
+  rootExport = if hasModule then {} else root
+  
   root.udefine or= (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
@@ -45,7 +47,9 @@ do (root = if hasModule then exportObject else this) ->
     result
   
   # Helper function to inject function/object into any object
-  root.udefine.inject = (obj, name) -> (res) -> obj[name] = res
+  root.udefine.inject = (obj, name) -> (res) -> 
+    return unless obj? and name?
+    obj[name] = res
   
   # Dependencies for browser (global object)
   root.udefine.globals or= {}
@@ -61,7 +65,7 @@ do (root = if hasModule then exportObject else this) ->
   
   # Default configuration definition
   root.udefine.defaultConfig = ->
-    root.udefine.globals.root or= root
+    root.udefine.globals.root or= rootExport
   
     define('root', -> root) if root.define?
   
@@ -70,7 +74,7 @@ do (root = if hasModule then exportObject else this) ->
   
   # Configuration helper function
   root.udefine.configure = (configFunc) ->
-    configFunc.apply root.udefine, [if hasModule then {} else root]
+    configFunc.apply root.udefine, [rootExport]
   
   # Export udefine function on CommonJS environments
   module.exports = exportObject.udefine if hasModule
