@@ -59,6 +59,13 @@ module.exports = (grunt) ->
         variables:
           title: 'Environment'
           script: '../all/environment.js'
+      injection:
+        src: 'templates/browsertest.html'
+        dest: 'test/browser/injection.html'
+        engine: 'handlebars'
+        variables:
+          title: 'Environment'
+          script: '../all/injection.js'
         
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
