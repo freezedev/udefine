@@ -2,9 +2,10 @@ udefine = require '../../dist/udefine'
 {expect} = require 'chai'
 
 # TODO: This test is not working yet
-###
 describe 'udefine commonjs dependencies', ->
   it 'multiple dependencies', (done) ->
+    udefine.paths.commonjs.base = 'test/node'
+    
     udefine.commonjs =
       dep1: './dep1'
       dep2: './dep2'
@@ -22,4 +23,3 @@ describe 'udefine commonjs dependencies', ->
       expect(num).to.be.a('number')
       
       done()
-###
