@@ -3,6 +3,7 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
     date: grunt.template.today 'dd-mm-yyyy'
+    clean: ['dist']
     coffee:
       compile:
         files: [{
