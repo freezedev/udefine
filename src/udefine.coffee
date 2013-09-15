@@ -61,9 +61,9 @@ do (root = if hasModule then exportObject else this) ->
         
         
     # Inject result into defined namespace
-    if Object.hasOwnProperty.call root.udefine.inject, name
-      injectName = root.udefine.inject[name].name
-      injectRoot = root.udefine.inject[name].root
+    if Object.hasOwnProperty.call root.udefine.inject.modules, name
+      injectName = root.udefine.inject.modules[name].name
+      injectRoot = root.udefine.inject.modules[name].root
       
       root.udefine.inject(injectRoot, injectName)(result)
         
@@ -74,7 +74,12 @@ do (root = if hasModule then exportObject else this) ->
     return unless obj? and name?
     obj[name] = res
   
-  root.udefine.inject.add = (name) -> root.udefine.inject[name] = undefined
+  root.udefine.modules = {}
+  
+  root.udefine.inject.add = (name) ->
+    root.udefine.inject.modules[name] = undefined
+    
+  root.udefine.inject.reset = -> root.udefine.inject.modules = {}
   
   # Dependencies for browser (global object)
   root.udefine.globals or= {}
