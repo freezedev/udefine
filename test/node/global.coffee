@@ -1,5 +1,5 @@
-udefineFunction = require '../dist/udefine'
-require '../dist/global'
+udefineFunction = require '../../dist/udefine'
+require '../../dist/global'
 {expect} = require 'chai'
 
 describe 'udefine global function', ->

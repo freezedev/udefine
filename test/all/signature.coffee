@@ -1,5 +1,12 @@
-udefine = require '../dist/udefine'
-{expect} = require 'chai'
+hasModule = module? and module.exports
+
+if hasModule
+  udefine = require '../../dist/udefine'
+  chai = require 'chai'
+else
+  {udefine, chai} = window
+
+{expect} = chai
 
 describe 'udefine signature', ->
   
