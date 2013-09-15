@@ -17,6 +17,9 @@
     "matchdep": "*",
     "handlebars": "*"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/freezedev/udefine.git"
