@@ -46,21 +46,13 @@ do (root = if hasModule then exportObject else this) ->
     if define?
       result = define.apply @, arguments if define.amd or define.umd
     else
-      if hasModule
-        path = require 'path'
-        
-        requireArr = (loadModule(dep, 'commonjs') for dep in deps)
-        
-        # Common JS
-        result = module.exports = resolveModule factory, requireArr
-      else
-        # Usual browser environment
-        globalsArr = (loadModule(dep, 'globals') for dep in deps)
-        
-        result = resolveModule factory, globalsArr
-                
-      # Set dependency if it does not exist
       depType = if hasModule then 'commonjs' else 'globals'
+      depArr = (loadModule(dep, depType) for dep in deps)
+      
+      result = resolveModule factory, depArr
+      module.exports = result if hasModule
+      
+      # Set dependency if it does not exist
       unless Object.hasOwnProperty.call root.udefine[depType], name
         root.udefine[depType][name] = result
         
