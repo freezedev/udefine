@@ -52,6 +52,13 @@ module.exports = (grunt) ->
         variables:
           title: 'Signature'
           script: '../all/signature.js'
+      environment:
+        src: 'templates/browsertest.html'
+        dest: 'test/browser/environment.html'
+        engine: 'handlebars'
+        variables:
+          title: 'Environment'
+          script: '../all/environment.js'
         
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
