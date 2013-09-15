@@ -11,6 +11,8 @@ exportObject = {}
 isObject = (obj) -> typeof obj is 'object' and not Array.isArray(obj)
 
 # Root object hook
+# TODO: Don't bind it directly to the root object
+# Use udefine in a closure and then bind to the specific objects afterwards
 do (root = if hasModule then exportObject else this) ->
   rootExport = if hasModule then {} else root
   
@@ -20,6 +22,13 @@ do (root = if hasModule then exportObject else this) ->
       factory.apply @, deps
     else
       factory
+  
+  loadModule = (name, type) ->
+    if hasModule and typeof root.udefine[type][name] is 'string'
+      path = require 'path'
+      require path.join(process.cwd(), root.udefine[type][name])
+    else
+      root.udefine[type][name]
   
   # Main entry point
   root.udefine or= (name, deps, factory) ->
@@ -34,24 +43,14 @@ do (root = if hasModule then exportObject else this) ->
     else
       if hasModule
         path = require 'path'
-        requireArr = []
         
-        for dep in deps
-          if typeof root.udefine.commonjs[dep] is 'string'
-            try
-              requireArr.push require(root.udefine.commonjs[dep])
-              
-            catch e
-              console.error "Error while loading #{dep}: #{e}"
-              requireArr.push undefined
-          else
-            requireArr.push root.udefine.commonjs[dep]
+        requireArr = (loadModule(dep, 'commonjs') for dep in deps)
         
         # Common JS
         result = module.exports = resolveModule factory, requireArr
       else
         # Usual browser environment
-        globalsArr = (root.udefine.globals[dep] for dep in deps)
+        globalsArr = (loadModule(dep, 'globals') for dep in deps)
         
         result = resolveModule factory, globalsArr
                 
@@ -84,6 +83,13 @@ do (root = if hasModule then exportObject else this) ->
   
   # TODO: Reflect if these two object could and should be merged together
   # Dependencies for browser (global object)
+  # Different idea:
+  #   Provide udefine.modules
+  #     with functions .add .remove .get .set
+  #     where you could define the type and it will also export the
+  #     commonjs and globals objects
+  #     .get and .set would only get and set the dependency for the
+  #     current platform
   root.udefine.globals or= {}
   
   # Dependencies for node.js or commonjs environments
