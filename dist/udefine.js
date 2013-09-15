@@ -1,8 +1,10 @@
 (function() {
   'use strict';
-  var hasModule;
+  var exportObject, hasModule;
 
   hasModule = (typeof module !== "undefined" && module !== null) && module.exports;
+
+  exportObject = {};
 
   (function(root) {
     var _base, _base1, _base2;
@@ -84,7 +86,9 @@
     root.udefine.configure = function(configFunc) {
       return configFunc.apply(root.udefine, [hasModule ? {} : root]);
     };
-    return module.exports = root.udefine;
-  })(hasModule ? global : this);
+    if (hasModule) {
+      return module.exports = exportObject.udefine;
+    }
+  })(hasModule ? exportObject : this);
 
 }).call(this);
