@@ -33,6 +33,7 @@ do (root = if hasModule then exportObject else this) ->
       result = define.apply @, arguments if define.amd or define.umd
     else
       if hasModule
+        path = require 'path'
         requireArr = []
         
         for dep in deps
@@ -74,13 +75,14 @@ do (root = if hasModule then exportObject else this) ->
     return unless obj? and name?
     obj[name] = res
   
-  root.udefine.modules = {}
+  root.udefine.inject.modules = {}
   
   root.udefine.inject.add = (name) ->
     root.udefine.inject.modules[name] = undefined
     
   root.udefine.inject.reset = -> root.udefine.inject.modules = {}
   
+  # TODO: Reflect if these two object could and should be merged together
   # Dependencies for browser (global object)
   root.udefine.globals or= {}
   
