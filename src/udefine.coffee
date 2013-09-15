@@ -54,9 +54,10 @@ do (root = if hasModule then exportObject else this) ->
         
         result = resolveModule factory, globalsArr
                 
-        # Set dependency if it does not exist
-        unless Object.hasOwnProperty.call root.udefine.globals, name
-          root.udefine.globals[name] = result
+      # Set dependency if it does not exist
+      depType = if hasModule then 'commonjs' else 'globals'
+      unless Object.hasOwnProperty.call root.udefine[depType], name
+        root.udefine[depType][name] = result
         
         
     # Inject result into defined namespace
