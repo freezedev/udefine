@@ -30,11 +30,18 @@
       }
     };
     loadModule = function(name, type) {
-      var path;
+      var path, prePath;
 
       if (hasModule && typeof root.udefine[type][name] === 'string') {
         path = require('path');
-        return require(path.join(process.cwd(), root.udefine[type][name]));
+        prePath = (function() {
+          if (root.udefine.paths[type].base) {
+            return root.udefine.paths[type].base;
+          } else {
+            return '';
+          }
+        })();
+        return require(path.join(process.cwd(), prePath, root.udefine[type][name]));
       } else {
         return root.udefine[type][name];
       }
@@ -115,6 +122,11 @@
       commonjs: hasModule,
       browser: !hasModule
     });
+    root.udefine.paths = {
+      commonjs: {
+        base: void 0
+      }
+    };
     root.udefine.defaultConfig = function() {
       var _base3;
 
