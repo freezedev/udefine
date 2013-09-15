@@ -1,1 +1,1 @@
-module.exports = require('./dist/global');
+require('./dist/global');
