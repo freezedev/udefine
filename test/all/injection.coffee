@@ -20,7 +20,7 @@ describe 'udefine.inject', ->
     expect(udefine.inject()).to.be.a('function')
     
   it 'udefine.inject called without parameters does not do anything', ->
-    expect(udefine.inject()()).to.not.throw(Error)
+    expect(-> udefine.inject()()).to.not.throw(Error)
     
   it 'udefine.inject called without name does not modify the object', ->
     udefine.inject(objEmpty)()
