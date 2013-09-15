@@ -2,6 +2,7 @@ module.exports = (grunt) ->
   
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
+    date: grunt.template.today 'dd-mm-yyyy'
     coffee:
       compile:
         files: [{
@@ -10,10 +11,16 @@ module.exports = (grunt) ->
           src: ['*.coffee'],
           dest: 'dist/',
           ext: '.js'
+        }, {
+          expand: true,
+          cwd: 'test/',
+          src: ['*.coffee'],
+          dest: 'test/',
+          ext: '.js'
         }]
     uglify:
       options:
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= date %> */\n'
         report: 'gzip'
       dist:
         files:
