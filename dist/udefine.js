@@ -47,7 +47,7 @@
       }
     };
     root.udefine || (root.udefine = function(name, deps, factory) {
-      var dep, depType, globalsArr, injectName, injectRoot, path, requireArr, result, _ref;
+      var dep, depArr, depType, injectName, injectRoot, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -60,33 +60,21 @@
           result = define.apply(this, arguments);
         }
       } else {
-        if (hasModule) {
-          path = require('path');
-          requireArr = (function() {
-            var _i, _len, _results;
-
-            _results = [];
-            for (_i = 0, _len = deps.length; _i < _len; _i++) {
-              dep = deps[_i];
-              _results.push(loadModule(dep, 'commonjs'));
-            }
-            return _results;
-          })();
-          result = module.exports = resolveModule(factory, requireArr);
-        } else {
-          globalsArr = (function() {
-            var _i, _len, _results;
-
-            _results = [];
-            for (_i = 0, _len = deps.length; _i < _len; _i++) {
-              dep = deps[_i];
-              _results.push(loadModule(dep, 'globals'));
-            }
-            return _results;
-          })();
-          result = resolveModule(factory, globalsArr);
-        }
         depType = hasModule ? 'commonjs' : 'globals';
+        depArr = (function() {
+          var _i, _len, _results;
+
+          _results = [];
+          for (_i = 0, _len = deps.length; _i < _len; _i++) {
+            dep = deps[_i];
+            _results.push(loadModule(dep, depType));
+          }
+          return _results;
+        })();
+        result = resolveModule(factory, depArr);
+        if (hasModule) {
+          module.exports = result;
+        }
         if (!Object.hasOwnProperty.call(root.udefine[depType], name)) {
           root.udefine[depType][name] = result;
         }
