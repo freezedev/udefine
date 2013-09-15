@@ -4,10 +4,7 @@
 hasModule = module? and module.exports
 
 # Root object hook
-# TODO: Binding to global on Node.js is not the best idea (I know it's bad
-#  practice), but what are the alternatives? (Putting it into a requirable 
-#  module is not really an option for small-scale projects)
-do (root = if hasModule then global else this) ->
+do (root = if hasModule then module.exports else this) ->
   root.udefine or= (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
@@ -73,6 +70,3 @@ do (root = if hasModule then global else this) ->
   # Configuration helper function
   root.udefine.configure = (configFunc) ->
     configFunc.apply root.udefine, [if hasModule then {} else root]
-  
-  
-  module.exports = root.udefine
