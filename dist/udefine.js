@@ -2,7 +2,7 @@
   'use strict';
   var exportObject, hasModule;
 
-  hasModule = (typeof module !== "undefined" && module !== null) && module.exports;
+  hasModule = (typeof module !== "undefined" && module !== null) && (module.exports != null);
 
   exportObject = {};
 

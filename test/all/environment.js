@@ -1,7 +1,7 @@
 (function() {
   var chai, expect, hasModule, udefine;
 
-  hasModule = (typeof module !== "undefined" && module !== null) && module.exports;
+  hasModule = (typeof module !== "undefined" && module !== null) && (module.exports != null);
 
   if (hasModule) {
     udefine = require('../../dist/udefine');
