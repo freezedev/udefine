@@ -29,7 +29,8 @@ it will resolve through the AMD loader.
 
 
 Alright, that's really great for jQuery modules. But what if you want to bind
-a module the global namespace if there is no AMD or CommonJS.
+a module the global namespace if there is no AMD or CommonJS?
+Just define where the module should be injected to and udefine will do the rest:
 
 ```javascript
 (function(root) {
