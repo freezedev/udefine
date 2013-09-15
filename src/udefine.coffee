@@ -2,9 +2,10 @@
 
 # Module switch
 hasModule = module? and module.exports
+exportObject = {}
 
 # Root object hook
-do (root = if hasModule then module.exports else this) ->
+do (root = if hasModule then exportObject else this) ->
   root.udefine or= (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
@@ -70,3 +71,6 @@ do (root = if hasModule then module.exports else this) ->
   # Configuration helper function
   root.udefine.configure = (configFunc) ->
     configFunc.apply root.udefine, [if hasModule then {} else root]
+  
+  # Export udefine function on CommonJS environments
+  module.exports = exportObject.udefine if hasModule
