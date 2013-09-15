@@ -26,7 +26,12 @@ do (root = if hasModule then exportObject else this) ->
   loadModule = (name, type) ->
     if hasModule and typeof root.udefine[type][name] is 'string'
       path = require 'path'
-      require path.join(process.cwd(), root.udefine[type][name])
+      prePath = do ->
+        if root.udefine.paths[type].base
+          root.udefine.paths[type].base
+        else
+          ''
+      require path.join(process.cwd(), prePath, root.udefine[type][name])
     else
       root.udefine[type][name]
   
@@ -100,6 +105,11 @@ do (root = if hasModule then exportObject else this) ->
     amd: do -> define? and (define.amd or define.umd)
     commonjs: hasModule
     browser: not hasModule
+  
+  # Paths
+  root.udefine.paths =
+    commonjs:
+      base: undefined
   
   # Default configuration definition
   root.udefine.defaultConfig = ->
