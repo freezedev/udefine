@@ -9,13 +9,7 @@ else
 {expect} = chai
 
 describe 'udefine.inject', ->
-
-  objEmpty = {}
-  obj1 = {}
-  obj2 = {}
-  obj3 = {}
-  obj4 = {}
-  
+ 
   it 'udefine.inject return value is a function', ->
     expect(udefine.inject()).to.be.a('function')
     
@@ -23,36 +17,83 @@ describe 'udefine.inject', ->
     expect(-> udefine.inject()()).to.not.throw(Error)
     
   it 'udefine.inject called without name does not modify the object', ->
-    udefine.inject(objEmpty)()
+    obj = {}
     
-    expect(objEmpty).to.be.empty
+    udefine.inject(obj)()
+    
+    expect(obj).to.be.empty
     
   it 'udefine.inject adding an undefined value', ->
-    udefine.inject(obj1, '1')()
+    obj = {}
     
-    expect(obj1).to.have.property('1')
-    expect(obj1).to.have.ownProperty('1')
-    expect(obj1['1']).to.be.undefined
+    udefine.inject(obj, '1')()
+    
+    expect(obj).to.have.ownProperty('1')
+    expect(obj['1']).to.be.undefined
 
   it 'udefine.inject adding a null value', ->
-    udefine.inject(obj2, '2')(null)
+    obj = {}
     
-    expect(obj2).to.have.property('2')
-    expect(obj2).to.have.ownProperty('2')
-    expect(obj2['2']).to.be.null
+    udefine.inject(obj, '2')(null)
+    
+    expect(obj).to.have.property('2')
+    expect(obj).to.have.ownProperty('2')
+    expect(obj['2']).to.be.null
     
   it 'udefine.inject adding an string value', ->
-    udefine.inject(obj3, '3')('test')
+    obj = {}
     
-    expect(obj3).to.have.property('3')
-    expect(obj3).to.have.ownProperty('3')
-    expect(obj3['3']).to.be.a('string')
-    expect(obj3['3']).to.equal('test')
+    udefine.inject(obj, '3')('test')
+    
+    expect(obj).to.have.property('3')
+    expect(obj).to.have.ownProperty('3')
+    expect(obj['3']).to.be.a('string')
+    expect(obj['3']).to.equal('test')
 
   it 'udefine.inject adding a number value', ->
-    udefine.inject(obj4, '4')(4)
+    obj = {}
     
-    expect(obj4).to.have.property('4')
-    expect(obj4).to.have.ownProperty('4')
-    expect(obj4['4']).to.be.a('number')
-    expect(obj4['4']).to.equal(4)
+    udefine.inject(obj, '4')(4)
+    
+    expect(obj).to.have.property('4')
+    expect(obj).to.have.ownProperty('4')
+    expect(obj['4']).to.be.a('number')
+    expect(obj['4']).to.equal(4)
+
+  it 'udefine.inject adding a boolean value', ->
+    obj = {}
+    
+    udefine.inject(obj, '5')(true)
+    
+    expect(obj).to.have.property('5')
+    expect(obj).to.have.ownProperty('5')
+    expect(obj['5']).to.be.true
+    
+  it 'udefine.inject adding an object', ->
+    obj = {}
+    
+    udefine.inject(obj, '6')({})
+    
+    expect(obj).to.have.property('6')
+    expect(obj).to.have.ownProperty('6')
+    expect(obj['6']).to.be.a('object')
+    expect(obj['6']).to.be.empty
+
+  it 'udefine.inject adding an array', ->
+    obj = {}
+    
+    udefine.inject(obj, '7')([])
+    
+    expect(obj).to.have.property('7')
+    expect(obj).to.have.ownProperty('7')
+    expect(obj['7']).to.be.a('array')
+    expect(obj['7']).to.be.empty
+    
+  it 'udefine.inject adding a function', ->
+    obj = {}
+    
+    udefine.inject(obj, '8')(->)
+    
+    expect(obj).to.have.property('8')
+    expect(obj).to.have.ownProperty('8')
+    expect(obj['8']).to.be.a('function')
