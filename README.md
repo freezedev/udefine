@@ -1,5 +1,8 @@
 udefine
 =======
+[![Build Status](https://travis-ci.org/freezedev/udefine.png)](https://travis-ci.org/freezedev/udefine)
+[![Dependency Status](https://david-dm.org/freezedev/udefine.png)](https://david-dm.org/freezedev/udefine)
+[![devDependency Status](https://david-dm.org/freezedev/udefine/dev-status.png)](https://david-dm.org/freezedev/udefine#info=devDependencies)
 
 Define a module as an AMD module and handle it as if it's an UMD module
 
