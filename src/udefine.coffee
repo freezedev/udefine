@@ -1,17 +1,30 @@
 'use strict'
 
+# ES5 shims
+do ->
+  Array.isArray ?= (a) -> a.push is Array.prototype.push and a.length?
+
 # Module switch
 hasModule = module? and module.exports?
 exportObject = {}
+
+isObject = (obj) -> typeof obj is 'object' and not Array.isArray(obj)
 
 # Root object hook
 do (root = if hasModule then exportObject else this) ->
   rootExport = if hasModule then {} else root
   
+  resolveModule = (factory, deps) ->
+    if typeof factory is 'function'
+      factory.apply @, deps
+    else
+      factory
+  
   root.udefine or= (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
-    [name, deps, factory] = [name, [], deps] if typeof deps is 'function'
+    if typeof deps is 'function' or isObject(deps)
+      [name, deps, factory] = [name, [], deps]
       
     # Define, either AMD or UMD (if any?)
     if define?
@@ -22,18 +35,24 @@ do (root = if hasModule then exportObject else this) ->
         
         for dep in deps
           if typeof root.udefine.commonjs[dep] is 'string'
-            requireArr.push require(root.udefine.commonjs[dep])
+            try
+              requireArr.push require(root.udefine.commonjs[dep])
+              
+            catch e
+              console.error "Error while loading #{dep}: #{e}"
+              requireArr.push undefined
           else
             requireArr.push root.udefine.commonjs[dep]
         
         # Common JS
-        result = module.exports = factory.apply @, requireArr
+        
+        result = module.exports = resolveModule factory, requireArr
       else
         # Usual browser environment
         globalsArr = (root.udefine.globals[dep] for dep in deps)
         
-        result = factory.apply @, globalsArr
-        
+        result = resolveModule factory, globalsArr
+                
         # Set dependency if it does not exist
         unless Object.hasOwnProperty.call root.udefine.globals, name
           root.udefine.globals[name] = result
