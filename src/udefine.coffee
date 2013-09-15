@@ -47,7 +47,7 @@ do (root = if hasModule then exportObject else this) ->
     result
   
   # Helper function to inject function/object into any object
-  root.udefine.inject = (obj, name) -> (res) -> 
+  root.udefine.inject = (obj, name) -> (res) ->
     return unless obj? and name?
     obj[name] = res
   
