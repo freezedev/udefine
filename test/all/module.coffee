@@ -109,3 +109,5 @@ describe 'udefine module definition', ->
     
     expect(window.stu).to.be.a('function')
     expect(window.stu()).to.equal(44)
+    
+# TODO: Add tests for .clear and .remove
