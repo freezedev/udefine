@@ -73,8 +73,8 @@ do (root = if hasModule then {} else this) ->
   
   udefine.inject.modules = {}
   
-  udefine.inject.add = (name) ->
-    udefine.inject.modules[name] = undefined
+  udefine.inject.add = (name, value) ->
+    udefine.inject.modules[name] = value
     @
 
   udefine.inject.remove = (name) ->
