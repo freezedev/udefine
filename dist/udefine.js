@@ -181,7 +181,8 @@
         return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
       })(),
       commonjs: hasModule,
-      browser: !hasModule
+      browser: !hasModule,
+      globals: !hasModule && !udefine.amd
     });
     udefine.paths = {
       commonjs: {

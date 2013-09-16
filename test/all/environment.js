@@ -25,6 +25,9 @@
     it('udefine.env has amd property', function() {
       return expect(envProp).to.have.property('amd');
     });
+    it('udefine.env has globals property', function() {
+      return expect(envProp).to.have.property('globals');
+    });
     it('udefine.env.commonjs is a boolean', function() {
       return expect(envProp.commonjs).to.be.a('boolean');
     });
@@ -33,6 +36,9 @@
     });
     it('udefine.env.amd is a boolean', function() {
       return expect(envProp.amd).to.be.a('boolean');
+    });
+    it('udefine.env.globals is a boolean', function() {
+      return expect(envProp.globals).to.be.a('boolean');
     });
     it('udefine.env.commonjs is true on Node.js', function() {
       if (hasModule) {
