@@ -74,6 +74,11 @@ do (root = if hasModule then {} else this) ->
   udefine.inject.modules = {}
   
   udefine.inject.add = (name, value) ->
+    return unless name?
+    value = {} unless value?
+    value.root = root unless value.root?
+    value.name = name unless value.name?
+    
     udefine.inject.modules[name] = value
     @
 
