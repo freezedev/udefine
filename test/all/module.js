@@ -83,7 +83,7 @@
       expect(injectObj.jkl.j).to.equal(true);
       return expect(injectObj.jkl.k).to.equal('string');
     });
-    return it('udefine module definition with injection (module !== injection)', function() {
+    it('udefine module definition with injection (module !== injection)', function() {
       var injectObj;
 
       injectObj = {};
@@ -100,6 +100,33 @@
       expect(injectObj.Universe).to.be.a('function');
       return expect(injectObj.Universe()).to.equal(42);
     });
+    it('udefine module definition with injection shorthand', function() {
+      var injectObj;
+
+      injectObj = {};
+      udefine.inject.add('pqr', {
+        root: injectObj
+      });
+      udefine('pqr', function() {
+        return function() {
+          return 43;
+        };
+      });
+      expect(injectObj).to.be.a('object');
+      expect(injectObj.pqr).to.be.a('function');
+      return expect(injectObj.pqr()).to.equal(43);
+    });
+    if (!hasModule) {
+      it('udefine module definition with injection shorthand (globals)', function() {});
+      udefine.inject.add('stu');
+      udefine('stu', function() {
+        return function() {
+          return 44;
+        };
+      });
+      expect(window.stu).to.be.a('function');
+      return expect(window.stu()).to.equal(44);
+    }
   });
 
 }).call(this);
