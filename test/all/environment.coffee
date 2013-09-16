@@ -21,6 +21,9 @@ describe 'udefine environment variables', ->
   it 'udefine.env has amd property', ->
     expect(envProp).to.have.property('amd')
     
+  it 'udefine.env has globals property', ->
+    expect(envProp).to.have.property('globals')
+    
   it 'udefine.env.commonjs is a boolean', ->
     expect(envProp.commonjs).to.be.a('boolean')
 
@@ -29,7 +32,10 @@ describe 'udefine environment variables', ->
     
   it 'udefine.env.amd is a boolean', ->
     expect(envProp.amd).to.be.a('boolean')
-    
+  
+  it 'udefine.env.globals is a boolean', ->
+    expect(envProp.globals).to.be.a('boolean')
+  
   it 'udefine.env.commonjs is true on Node.js', ->
     if hasModule then expect(envProp.commonjs).to.be.true
 
