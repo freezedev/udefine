@@ -128,6 +128,7 @@ do (root = if hasModule then {} else this) ->
     amd: do -> define? and (define.amd or define.umd)
     commonjs: hasModule
     browser: not hasModule
+    globals: not hasModule and not udefine.amd
   
   # Paths
   udefine.paths =
