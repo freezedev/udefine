@@ -95,8 +95,8 @@
       };
     };
     udefine.inject.modules = {};
-    udefine.inject.add = function(name) {
-      udefine.inject.modules[name] = void 0;
+    udefine.inject.add = function(name, value) {
+      udefine.inject.modules[name] = value;
       return this;
     };
     udefine.inject.remove = function(name) {
@@ -151,6 +151,15 @@
           }
         } else {
           udefine.modules[platform][name] = value;
+        }
+        return this;
+      },
+      clear: function() {
+        var p, _i, _len;
+
+        for (_i = 0, _len = platforms.length; _i < _len; _i++) {
+          p = platforms[_i];
+          udefine.modules[p] = {};
         }
         return this;
       }
