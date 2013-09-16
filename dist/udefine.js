@@ -96,6 +96,18 @@
     };
     udefine.inject.modules = {};
     udefine.inject.add = function(name, value) {
+      if (name == null) {
+        return;
+      }
+      if (value == null) {
+        value = {};
+      }
+      if (value.root == null) {
+        value.root = root;
+      }
+      if (value.name == null) {
+        value.name = name;
+      }
       udefine.inject.modules[name] = value;
       return this;
     };
