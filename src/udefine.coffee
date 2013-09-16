@@ -13,6 +13,8 @@ isObject = (obj) -> typeof obj is 'object' and not Array.isArray(obj)
 # Root object hook
 # Use udefine in the closure and then bind to the specific objects afterwards
 do (root = if hasModule then {} else this) ->
+  # TODO: Find a better wording than platform and platforms
+  platforms = ['commonjs', 'globals']
   platform = if hasModule then 'commonjs' else 'globals'
   
   # Helper function to resolve a module (either function or object)
@@ -71,10 +73,17 @@ do (root = if hasModule then {} else this) ->
   
   udefine.inject.modules = {}
   
-  udefine.inject.add = (name) -> udefine.inject.modules[name] = undefined
-  udefine.inject.remove = (name) -> delete udefine.inject.modules[name]
+  udefine.inject.add = (name) -> 
+    udefine.inject.modules[name] = undefined
+    @
+
+  udefine.inject.remove = (name) -> 
+    delete udefine.inject.modules[name]
+    @
     
-  udefine.inject.clear = -> udefine.inject.modules = {}
+  udefine.inject.clear = -> 
+    udefine.inject.modules = {}
+    @
   
   # TODO: Reflect if these two object could and should be merged together
   # Dependencies for browser (global object)
@@ -89,15 +98,21 @@ do (root = if hasModule then {} else this) ->
     globals: {}
     commonjs: {}
   
-    add: (name) -> 
-      if typeof name is 'object'
-      udefine.modules[platform][name] = undefined
+    add: (name, all) ->
+      if all
+        udefine.modules[p][name] for p in platforms
+      else
+        udefine.modules[platform][name]
+        
+      @
     remove: (name) -> 
       if Object.hasOwnProperty.call udefine.modules.globals, name
         delete udefine.modules['globals'][name]
         
       if Object.hasOwnProperty.call udefine.modules.commonjs, name
         delete udefine.modules['commonjs'][name]
+        
+      @
     
     get: ->
     set: ->
