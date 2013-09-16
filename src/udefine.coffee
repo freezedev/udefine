@@ -71,10 +71,10 @@ do (root = if hasModule then {} else this) ->
   
   udefine.inject.modules = {}
   
-  udefine.inject.add = (name) ->
-    udefine.inject.modules[name] = undefined
+  udefine.inject.add = (name) -> udefine.inject.modules[name] = undefined
+  udefine.inject.remove = (name) -> delete udefine.inject.modules[name]
     
-  udefine.inject.reset = -> udefine.inject.modules = {}
+  udefine.inject.clear = -> udefine.inject.modules = {}
   
   # TODO: Reflect if these two object could and should be merged together
   # Dependencies for browser (global object)
@@ -89,8 +89,15 @@ do (root = if hasModule then {} else this) ->
     globals: {}
     commonjs: {}
   
-    add: (name) ->
-    remove: (name) ->
+    add: (name) -> 
+      if typeof name is 'object'
+      udefine.modules[platform][name] = undefined
+    remove: (name) -> 
+      if Object.hasOwnProperty.call udefine.modules.globals, name
+        delete udefine.modules['globals'][name]
+        
+      if Object.hasOwnProperty.call udefine.modules.commonjs, name
+        delete udefine.modules['commonjs'][name]
     
     get: ->
     set: ->
