@@ -31,14 +31,12 @@
       return expect(envProp).to.be.a('object');
     });
     it('udefine has dependency properties', function() {
-      var depCommonJS, depGlobals;
-
-      depGlobals = udefine.globals;
-      depCommonJS = udefine.commonjs;
-      expect(udefine).to.have.property('globals');
-      expect(udefine).to.have.property('commonjs');
-      expect(depGlobals).to.be.a('object');
-      return expect(depCommonJS).to.be.a('object');
+      expect(udefine).to.have.property('modules');
+      expect(udefine.modules).to.have.property('commonjs');
+      expect(udefine.modules).to.have.property('commonjs');
+      expect(udefine.modules).to.be.a('object');
+      expect(udefine.modules.commonjs).to.be.a('object');
+      return expect(udefine.modules.globals).to.be.a('object');
     });
     it('udefine has a property .inject', function() {
       var injectProp;

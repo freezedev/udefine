@@ -19,8 +19,9 @@
   };
 
   (function(root) {
-    var loadModule, platform, resolveModule, udefine;
+    var loadModule, platform, platforms, resolveModule, udefine;
 
+    platforms = ['commonjs', 'globals'];
     platform = hasModule ? 'commonjs' : 'globals';
     resolveModule = function(factory, deps) {
       if (typeof factory === 'function') {
@@ -74,8 +75,8 @@
         if (hasModule) {
           module.exports = result;
         }
-        if (!Object.hasOwnProperty.call(udefine[platform], name)) {
-          udefine[platform][name] = result;
+        if (!Object.hasOwnProperty.call(udefine.modules[platform], name)) {
+          udefine.modules[platform][name] = result;
         }
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
@@ -95,21 +96,65 @@
     };
     udefine.inject.modules = {};
     udefine.inject.add = function(name) {
-      return udefine.inject.modules[name] = void 0;
+      udefine.inject.modules[name] = void 0;
+      return this;
     };
-    udefine.inject.reset = function() {
-      return udefine.inject.modules = {};
+    udefine.inject.remove = function(name) {
+      delete udefine.inject.modules[name];
+      return this;
+    };
+    udefine.inject.clear = function() {
+      udefine.inject.modules = {};
+      return this;
     };
     udefine.modules = {
       globals: {},
       commonjs: {},
-      add: function(name) {},
-      remove: function(name) {},
-      get: function() {},
-      set: function() {}
+      add: function(name, value) {
+        var v, _i, _len;
+
+        if (value) {
+          if (Array.isArray(value)) {
+            for (_i = 0, _len = value.length; _i < _len; _i++) {
+              v = value[_i];
+              udefine.modules[v][name] = void 0;
+            }
+          } else {
+            udefine.modules.set(name, value);
+          }
+        } else {
+          udefine.modules[platform][name] = void 0;
+        }
+        return this;
+      },
+      remove: function(name) {
+        var p, _i, _len;
+
+        for (_i = 0, _len = platforms.length; _i < _len; _i++) {
+          p = platforms[_i];
+          if (Object.hasOwnProperty.call(udefine.modules[p], name)) {
+            delete udefine.modules[p][name];
+          }
+        }
+        return this;
+      },
+      get: function(name) {
+        return udefine.modules[platform][name];
+      },
+      set: function(name, value) {
+        var k, v;
+
+        if (typeof value === 'object') {
+          for (k in value) {
+            v = value[k];
+            udefine.modules[k][name] = v;
+          }
+        } else {
+          udefine.modules[platform][name] = value;
+        }
+        return this;
+      }
     };
-    udefine.globals || (udefine.globals = {});
-    udefine.commonjs || (udefine.commonjs = {});
     udefine.env || (udefine.env = {
       amd: (function() {
         return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
@@ -123,9 +168,7 @@
       }
     };
     udefine.defaultConfig = function() {
-      var _base;
-
-      (_base = udefine.globals).root || (_base.root = root);
+      udefine.modules.commonjs.root = root;
       if (root.define != null) {
         return define('root', function() {
           return root;

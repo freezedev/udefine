@@ -21,13 +21,7 @@
         b: 4,
         c: 3
       });
-      resProp = (function() {
-        if (hasModule) {
-          return udefine.commonjs.abc;
-        } else {
-          return udefine.globals.abc;
-        }
-      })();
+      resProp = udefine.modules.get('abc');
       expect(resProp).to.be.a('object');
       expect(resProp).to.have.property('a');
       expect(resProp).to.have.property('b');
@@ -39,13 +33,7 @@
       udefine('def', function() {
         return 42;
       });
-      resProp = (function() {
-        if (hasModule) {
-          return udefine.commonjs.def;
-        } else {
-          return udefine.globals.def;
-        }
-      })();
+      resProp = udefine.modules.get('def');
       expect(resProp).to.be.a('number');
       return expect(resProp).to.equal(42);
     });
