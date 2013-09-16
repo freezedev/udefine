@@ -11,10 +11,9 @@ exportObject = {}
 isObject = (obj) -> typeof obj is 'object' and not Array.isArray(obj)
 
 # Root object hook
-# TODO: Don't bind it directly to the root object
-# Use udefine in a closure and then bind to the specific objects afterwards
-do (root = if hasModule then exportObject else this) ->
-  rootExport = if hasModule then {} else root
+# Use udefine in the closure and then bind to the specific objects afterwards
+do (root = if hasModule then {} else this) ->
+  platform = if hasModule then 'commonjs' else 'globals'
   
   # Helper function to resolve a module (either function or object)
   resolveModule = (factory, deps) ->
@@ -24,19 +23,19 @@ do (root = if hasModule then exportObject else this) ->
       factory
   
   loadModule = (name, type) ->
-    if hasModule and typeof root.udefine[type][name] is 'string'
+    if hasModule and typeof udefine[type][name] is 'string'
       path = require 'path'
       prePath = do ->
-        if root.udefine.paths[type].base
-          root.udefine.paths[type].base
+        if udefine.paths[type].base
+          udefine.paths[type].base
         else
           ''
-      require path.join(process.cwd(), prePath, root.udefine[type][name])
+      require path.join(process.cwd(), prePath, udefine[type][name])
     else
-      root.udefine[type][name]
+      udefine[type][name]
   
   # Main entry point
-  root.udefine or= (name, deps, factory) ->
+  udefine = (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
     if typeof deps is 'function' or isObject(deps)
@@ -46,37 +45,36 @@ do (root = if hasModule then exportObject else this) ->
     if define?
       result = define.apply @, arguments if define.amd or define.umd
     else
-      depType = if hasModule then 'commonjs' else 'globals'
-      depArr = (loadModule(dep, depType) for dep in deps)
+      depArr = (loadModule(dep, platform) for dep in deps)
       
       result = resolveModule factory, depArr
       module.exports = result if hasModule
       
       # Set dependency if it does not exist
-      unless Object.hasOwnProperty.call root.udefine[depType], name
-        root.udefine[depType][name] = result
+      unless Object.hasOwnProperty.call udefine[platform], name
+        udefine[platform][name] = result
         
         
     # Inject result into defined namespace
-    if Object.hasOwnProperty.call root.udefine.inject.modules, name
-      injectName = root.udefine.inject.modules[name].name
-      injectRoot = root.udefine.inject.modules[name].root
+    if Object.hasOwnProperty.call udefine.inject.modules, name
+      injectName = udefine.inject.modules[name].name
+      injectRoot = udefine.inject.modules[name].root
       
-      root.udefine.inject(injectRoot, injectName)(result)
+      udefine.inject(injectRoot, injectName)(result)
         
     result
   
   # Helper function to inject function/object into any object
-  root.udefine.inject = (obj, name) -> (res) ->
+  udefine.inject = (obj, name) -> (res) ->
     return unless obj? and name?
     obj[name] = res
   
-  root.udefine.inject.modules = {}
+  udefine.inject.modules = {}
   
-  root.udefine.inject.add = (name) ->
-    root.udefine.inject.modules[name] = undefined
+  udefine.inject.add = (name) ->
+    udefine.inject.modules[name] = undefined
     
-  root.udefine.inject.reset = -> root.udefine.inject.modules = {}
+  udefine.inject.reset = -> udefine.inject.modules = {}
   
   # TODO: Reflect if these two object could and should be merged together
   # Dependencies for browser (global object)
@@ -87,34 +85,44 @@ do (root = if hasModule then exportObject else this) ->
   #     commonjs and globals objects
   #     .get and .set would only get and set the dependency for the
   #     current platform
-  root.udefine.globals or= {}
+  udefine.modules =
+    globals: {}
+    commonjs: {}
+  
+    add: (name) ->
+    remove: (name) ->
+    
+    get: ->
+    set: ->
+  
+  udefine.globals or= {}
   
   # Dependencies for node.js or commonjs environments
-  root.udefine.commonjs or= {}
+  udefine.commonjs or= {}
   
   # Default settings for udefine environment
-  root.udefine.env or=
+  udefine.env or=
     amd: do -> define? and (define.amd or define.umd)
     commonjs: hasModule
     browser: not hasModule
   
   # Paths
-  root.udefine.paths =
+  udefine.paths =
     commonjs:
       base: undefined
   
   # Default configuration definition
-  root.udefine.defaultConfig = ->
-    root.udefine.globals.root or= rootExport
+  udefine.defaultConfig = ->
+    udefine.globals.root or= root
   
     define('root', -> root) if root.define?
   
   # Call default configuration
-  root.udefine.defaultConfig()
+  udefine.defaultConfig()
   
   # Configuration helper function
-  root.udefine.configure = (configFunc) ->
-    configFunc.apply root.udefine, [rootExport]
+  udefine.configure = (configFunc) ->
+    configFunc.apply udefine, [root]
   
   # Export udefine function on CommonJS environments
-  module.exports = exportObject.udefine if hasModule
+  if hasModule then module.exports = udefine else root.udefine = udefine
