@@ -1,7 +1,7 @@
 {
   "name": "udefine",
   "description": "Define a module like it's an AMD module and use it in the browser/AMD and CommonJS",
-  "version": "0.7.8",
+  "version": "0.8.0",
   "main": "dist/udefine.js",
   "devDependencies": {
     "mocha": "*",
