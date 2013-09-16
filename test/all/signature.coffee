@@ -26,14 +26,13 @@ describe 'udefine signature', ->
     expect(envProp).to.be.a('object')
     
   it 'udefine has dependency properties', ->
-    depGlobals = udefine.globals
-    depCommonJS = udefine.commonjs
+    expect(udefine).to.have.property('modules')
+    expect(udefine.modules).to.have.property('commonjs')
+    expect(udefine.modules).to.have.property('commonjs')
     
-    expect(udefine).to.have.property('globals')
-    expect(udefine).to.have.property('commonjs')
-    
-    expect(depGlobals).to.be.a('object')
-    expect(depCommonJS).to.be.a('object')
+    expect(udefine.modules).to.be.a('object')
+    expect(udefine.modules.commonjs).to.be.a('object')
+    expect(udefine.modules.globals).to.be.a('object')
 
   it 'udefine has a property .inject', ->
     injectProp = udefine.inject
