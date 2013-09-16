@@ -1,6 +1,6 @@
 {
   "name": "udefine",
-  "description": "Define a module like it's an AMD module and use it in the browser/AMD and CommonJS",
+  "description": "Define an UMD module like an AMD module and use it (almost) anywhere",
   "version": "0.8.2",
   "main": "dist/udefine.js",
   "devDependencies": {
