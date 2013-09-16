@@ -4,13 +4,13 @@ udefine
 [![Dependency Status](https://david-dm.org/freezedev/udefine.png)](https://david-dm.org/freezedev/udefine)
 [![devDependency Status](https://david-dm.org/freezedev/udefine/dev-status.png)](https://david-dm.org/freezedev/udefine#info=devDependencies)
 
-Define a module as an AMD module and handle it as if it's an UMD module
+Define an UMD module like AMD module and use it anywhere
 
 **Features**  
-* Provides a handy function wrapper for UMD modules
-* Same fuction signature as AMD modules
-* No need for boilerplate definitions
-* Less than 0.6 kB minified and gzipped (might increase a bit, but I'll keep it under 1kb)
+- Provides a handy function wrapper for UMD modules
+- Same fuction signature as AMD modules
+- No need for boilerplate definitions
+- Less than 0.6 kB minified and gzipped (might increase a bit, but I'll keep it under 1kb)
 
 **Usage**  
 ```javascript
