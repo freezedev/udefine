@@ -113,6 +113,10 @@ do (root = if hasModule then {} else this) ->
       else
         udefine.modules[platform][name] = value
       @
+      
+    clear: ->
+      udefine.modules[p] = {} for p in platforms
+      @
   
   # Default settings for udefine environment
   udefine.env or=
