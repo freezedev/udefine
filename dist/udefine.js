@@ -19,9 +19,9 @@
   };
 
   (function(root) {
-    var loadModule, resolveModule, rootExport, _base, _base1, _base2;
+    var loadModule, platform, resolveModule, udefine;
 
-    rootExport = hasModule ? {} : root;
+    platform = hasModule ? 'commonjs' : 'globals';
     resolveModule = function(factory, deps) {
       if (typeof factory === 'function') {
         return factory.apply(this, deps);
@@ -32,22 +32,22 @@
     loadModule = function(name, type) {
       var path, prePath;
 
-      if (hasModule && typeof root.udefine[type][name] === 'string') {
+      if (hasModule && typeof udefine[type][name] === 'string') {
         path = require('path');
         prePath = (function() {
-          if (root.udefine.paths[type].base) {
-            return root.udefine.paths[type].base;
+          if (udefine.paths[type].base) {
+            return udefine.paths[type].base;
           } else {
             return '';
           }
         })();
-        return require(path.join(process.cwd(), prePath, root.udefine[type][name]));
+        return require(path.join(process.cwd(), prePath, udefine[type][name]));
       } else {
-        return root.udefine[type][name];
+        return udefine[type][name];
       }
     };
-    root.udefine || (root.udefine = function(name, deps, factory) {
-      var dep, depArr, depType, injectName, injectRoot, result, _ref;
+    udefine = function(name, deps, factory) {
+      var dep, depArr, injectName, injectRoot, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -60,14 +60,13 @@
           result = define.apply(this, arguments);
         }
       } else {
-        depType = hasModule ? 'commonjs' : 'globals';
         depArr = (function() {
           var _i, _len, _results;
 
           _results = [];
           for (_i = 0, _len = deps.length; _i < _len; _i++) {
             dep = deps[_i];
-            _results.push(loadModule(dep, depType));
+            _results.push(loadModule(dep, platform));
           }
           return _results;
         })();
@@ -75,18 +74,18 @@
         if (hasModule) {
           module.exports = result;
         }
-        if (!Object.hasOwnProperty.call(root.udefine[depType], name)) {
-          root.udefine[depType][name] = result;
+        if (!Object.hasOwnProperty.call(udefine[platform], name)) {
+          udefine[platform][name] = result;
         }
       }
-      if (Object.hasOwnProperty.call(root.udefine.inject.modules, name)) {
-        injectName = root.udefine.inject.modules[name].name;
-        injectRoot = root.udefine.inject.modules[name].root;
-        root.udefine.inject(injectRoot, injectName)(result);
+      if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
+        injectName = udefine.inject.modules[name].name;
+        injectRoot = udefine.inject.modules[name].root;
+        udefine.inject(injectRoot, injectName)(result);
       }
       return result;
-    });
-    root.udefine.inject = function(obj, name) {
+    };
+    udefine.inject = function(obj, name) {
       return function(res) {
         if (!((obj != null) && (name != null))) {
           return;
@@ -94,44 +93,54 @@
         return obj[name] = res;
       };
     };
-    root.udefine.inject.modules = {};
-    root.udefine.inject.add = function(name) {
-      return root.udefine.inject.modules[name] = void 0;
+    udefine.inject.modules = {};
+    udefine.inject.add = function(name) {
+      return udefine.inject.modules[name] = void 0;
     };
-    root.udefine.inject.reset = function() {
-      return root.udefine.inject.modules = {};
+    udefine.inject.reset = function() {
+      return udefine.inject.modules = {};
     };
-    (_base = root.udefine).globals || (_base.globals = {});
-    (_base1 = root.udefine).commonjs || (_base1.commonjs = {});
-    (_base2 = root.udefine).env || (_base2.env = {
+    udefine.modules = {
+      globals: {},
+      commonjs: {},
+      add: function(name) {},
+      remove: function(name) {},
+      get: function() {},
+      set: function() {}
+    };
+    udefine.globals || (udefine.globals = {});
+    udefine.commonjs || (udefine.commonjs = {});
+    udefine.env || (udefine.env = {
       amd: (function() {
         return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
       })(),
       commonjs: hasModule,
       browser: !hasModule
     });
-    root.udefine.paths = {
+    udefine.paths = {
       commonjs: {
         base: void 0
       }
     };
-    root.udefine.defaultConfig = function() {
-      var _base3;
+    udefine.defaultConfig = function() {
+      var _base;
 
-      (_base3 = root.udefine.globals).root || (_base3.root = rootExport);
+      (_base = udefine.globals).root || (_base.root = root);
       if (root.define != null) {
         return define('root', function() {
           return root;
         });
       }
     };
-    root.udefine.defaultConfig();
-    root.udefine.configure = function(configFunc) {
-      return configFunc.apply(root.udefine, [rootExport]);
+    udefine.defaultConfig();
+    udefine.configure = function(configFunc) {
+      return configFunc.apply(udefine, [root]);
     };
     if (hasModule) {
-      return module.exports = exportObject.udefine;
+      return module.exports = udefine;
+    } else {
+      return root.udefine = udefine;
     }
-  })(hasModule ? exportObject : this);
+  })(hasModule ? {} : this);
 
 }).call(this);
