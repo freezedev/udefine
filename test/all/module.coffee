@@ -87,3 +87,25 @@ describe 'udefine module definition', ->
     expect(injectObj).to.be.a('object')
     expect(injectObj.Universe).to.be.a('function')
     expect(injectObj.Universe()).to.equal(42)
+    
+  it 'udefine module definition with injection shorthand', ->
+    injectObj = {}
+    
+    udefine.inject.add 'pqr',
+      root: injectObj
+      
+    udefine 'pqr', -> -> 43
+    
+    expect(injectObj).to.be.a('object')
+    expect(injectObj.pqr).to.be.a('function')
+    expect(injectObj.pqr()).to.equal(43)
+    
+  unless hasModule
+    it 'udefine module definition with injection shorthand (globals)', ->
+    
+    udefine.inject.add 'stu'
+          
+    udefine 'stu', -> -> 44
+    
+    expect(window.stu).to.be.a('function')
+    expect(window.stu()).to.equal(44)
