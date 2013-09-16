@@ -53,8 +53,8 @@ do (root = if hasModule then {} else this) ->
       module.exports = result if hasModule
       
       # Set dependency if it does not exist
-      unless Object.hasOwnProperty.call udefine[platform], name
-        udefine[platform][name] = result
+      unless Object.hasOwnProperty.call udefine.modules[platform], name
+        udefine.modules[platform][name] = result
         
         
     # Inject result into defined namespace
@@ -73,54 +73,46 @@ do (root = if hasModule then {} else this) ->
   
   udefine.inject.modules = {}
   
-  udefine.inject.add = (name) -> 
+  udefine.inject.add = (name) ->
     udefine.inject.modules[name] = undefined
     @
 
-  udefine.inject.remove = (name) -> 
+  udefine.inject.remove = (name) ->
     delete udefine.inject.modules[name]
     @
     
-  udefine.inject.clear = -> 
+  udefine.inject.clear = ->
     udefine.inject.modules = {}
     @
   
-  # TODO: Reflect if these two object could and should be merged together
-  # Dependencies for browser (global object)
-  # Different idea:
-  #   Provide udefine.modules
-  #     with functions .add .remove .get .set
-  #     where you could define the type and it will also export the
-  #     commonjs and globals objects
-  #     .get and .set would only get and set the dependency for the
-  #     current platform
+  # Dependencies
   udefine.modules =
     globals: {}
     commonjs: {}
   
-    add: (name, all) ->
-      if all
-        udefine.modules[p][name] for p in platforms
+    add: (name, value) ->
+      if value
+        if Array.isArray value
+          udefine.modules[v][name] = undefined for v in value
+        else
+          udefine.modules.set name, value
       else
-        udefine.modules[platform][name]
-        
+        udefine.modules[platform][name] = undefined
       @
-    remove: (name) -> 
-      if Object.hasOwnProperty.call udefine.modules.globals, name
-        delete udefine.modules['globals'][name]
-        
-      if Object.hasOwnProperty.call udefine.modules.commonjs, name
-        delete udefine.modules['commonjs'][name]
-        
+      
+    remove: (name) ->
+      for p in platforms
+        if Object.hasOwnProperty.call udefine.modules[p], name
+          delete udefine.modules[p][name]
       @
     
-    get: ->
-    set: ->
-  
-  udefine.globals or= {}
-  
-  # Dependencies for node.js or commonjs environments
-  udefine.commonjs or= {}
+    get: (name) -> udefine.modules[platform][name]
+    set: (name, value) ->
+      if typeof value is 'object'
+        udefine.modules[k][name] = v for k, v of value
+      else
+        udefine.modules[platform][name] = value
+      @
   
   # Default settings for udefine environment
   udefine.env or=
@@ -135,7 +127,7 @@ do (root = if hasModule then {} else this) ->
   
   # Default configuration definition
   udefine.defaultConfig = ->
-    udefine.globals.root or= root
+    udefine.modules.commonjs.root = root
   
     define('root', -> root) if root.define?
   
