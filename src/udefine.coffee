@@ -25,16 +25,16 @@ do (root = if hasModule then {} else this) ->
       factory
   
   loadModule = (name, type) ->
-    if hasModule and typeof udefine[type][name] is 'string'
+    if hasModule and typeof udefine.modules[type][name] is 'string'
       path = require 'path'
       prePath = do ->
         if udefine.paths[type].base
           udefine.paths[type].base
         else
           ''
-      require path.join(process.cwd(), prePath, udefine[type][name])
+      require path.join(process.cwd(), prePath, udefine.modules[type][name])
     else
-      udefine[type][name]
+      udefine.modules[type][name]
   
   # Main entry point
   udefine = (name, deps, factory) ->
@@ -50,6 +50,7 @@ do (root = if hasModule then {} else this) ->
       depArr = (loadModule(dep, platform) for dep in deps)
       
       result = resolveModule factory, depArr
+      
       module.exports = result if hasModule
       
       # Set dependency if it does not exist
@@ -59,10 +60,15 @@ do (root = if hasModule then {} else this) ->
         
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
-      injectName = udefine.inject.modules[name].name
-      injectRoot = udefine.inject.modules[name].root
+      injectObject = udefine.inject.modules[name]
+      
+      {root: injectRoot, name: injectName, exportable} = injectObject
       
       udefine.inject(injectRoot, injectName)(result)
+      
+      if hasModule
+        if exportable or exportable is 'all' then module.exports = result
+        if exportable is 'partial' then exports[injectName] = result
         
     result
   
