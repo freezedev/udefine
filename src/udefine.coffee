@@ -101,14 +101,18 @@ do (root = if hasModule then {} else this) ->
     globals: {}
     commonjs: {}
   
+    # TODO: Reflect if previously defined modules should be overwritten
     add: (name, value) ->
-      if value
-        if Array.isArray value
-          udefine.modules[v][name] = undefined for v in value
-        else
-          udefine.modules.set name, value
+      if typeof name is 'object'
+        @add key, val for key, val of name
       else
-        udefine.modules[platform][name] = undefined
+        if value
+          if Array.isArray value
+            udefine.modules[v][name] = undefined for v in value
+          else
+            udefine.modules.set name, value
+        else
+          udefine.modules[platform][name] = undefined
       @
       
     remove: (name) ->
