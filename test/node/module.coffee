@@ -6,7 +6,7 @@ describe 'udefine commonjs dependencies', ->
   it 'multiple dependencies', (done) ->
     udefine.paths.commonjs.base = 'test/node'
     
-    udefine.commonjs =
+    udefine.modules.add
       dep1: './dep1'
       dep2: './dep2'
       
