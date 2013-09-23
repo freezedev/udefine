@@ -4,7 +4,9 @@ udefine
 [![Dependency Status](https://david-dm.org/freezedev/udefine.png)](https://david-dm.org/freezedev/udefine)
 [![devDependency Status](https://david-dm.org/freezedev/udefine/dev-status.png)](https://david-dm.org/freezedev/udefine#info=devDependencies)
 
-Define an UMD module like AMD module and use it anywhere
+Define an UMD module like an AMD module and use it (almost) anywhere
+
+
 
 **Features**  
 - Provides a handy function wrapper for UMD modules
