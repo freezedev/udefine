@@ -46,28 +46,28 @@ module.exports = (grunt) ->
       grunt: ['gruntfile.coffee']
     template:
       signature:
-        src: 'templates/browsertest.html'
+        src: 'test/templates/browsertest.html'
         dest: 'test/browser/signature.html'
         engine: 'handlebars'
         variables:
           title: 'Signature'
           script: '../all/signature.js'
       environment:
-        src: 'templates/browsertest.html'
+        src: 'test/templates/browsertest.html'
         dest: 'test/browser/environment.html'
         engine: 'handlebars'
         variables:
           title: 'Environment'
           script: '../all/environment.js'
       injection:
-        src: 'templates/browsertest.html'
+        src: 'test/templates/browsertest.html'
         dest: 'test/browser/injection.html'
         engine: 'handlebars'
         variables:
           title: 'Injection'
           script: '../all/injection.js'
       module:
-        src: 'templates/browsertest.html'
+        src: 'test/templates/browsertest.html'
         dest: 'test/browser/module.html'
         engine: 'handlebars'
         variables:
