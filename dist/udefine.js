@@ -131,19 +131,26 @@
       globals: {},
       commonjs: {},
       add: function(name, value) {
-        var v, _i, _len;
+        var key, v, val, _i, _len;
 
-        if (value) {
-          if (Array.isArray(value)) {
-            for (_i = 0, _len = value.length; _i < _len; _i++) {
-              v = value[_i];
-              udefine.modules[v][name] = void 0;
-            }
-          } else {
-            udefine.modules.set(name, value);
+        if (typeof name === 'object') {
+          for (key in name) {
+            val = name[key];
+            this.add(key, val);
           }
         } else {
-          udefine.modules[platform][name] = void 0;
+          if (value) {
+            if (Array.isArray(value)) {
+              for (_i = 0, _len = value.length; _i < _len; _i++) {
+                v = value[_i];
+                udefine.modules[v][name] = void 0;
+              }
+            } else {
+              udefine.modules.set(name, value);
+            }
+          } else {
+            udefine.modules[platform][name] = void 0;
+          }
         }
         return this;
       },
