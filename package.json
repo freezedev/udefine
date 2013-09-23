@@ -1,7 +1,7 @@
 {
   "name": "udefine",
   "description": "Define an UMD module like an AMD module and use it (almost) anywhere",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "main": "dist/udefine.js",
   "devDependencies": {
     "mocha": "*",
