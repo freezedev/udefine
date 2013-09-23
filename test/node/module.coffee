@@ -9,7 +9,7 @@ describe 'udefine commonjs dependencies', ->
     udefine.modules.add
       dep1: './dep1'
       dep2: './dep2'
-      
+    
     udefine 'nodetest', ['dep1', 'dep2'], (dep1, dep2) ->
       expect(dep1).to.be.a('object')
       expect(dep1).to.have.property('number')
