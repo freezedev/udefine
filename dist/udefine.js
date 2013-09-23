@@ -33,7 +33,7 @@
     loadModule = function(name, type) {
       var path, prePath;
 
-      if (hasModule && typeof udefine[type][name] === 'string') {
+      if (hasModule && typeof udefine.modules[type][name] === 'string') {
         path = require('path');
         prePath = (function() {
           if (udefine.paths[type].base) {
@@ -42,13 +42,13 @@
             return '';
           }
         })();
-        return require(path.join(process.cwd(), prePath, udefine[type][name]));
+        return require(path.join(process.cwd(), prePath, udefine.modules[type][name]));
       } else {
-        return udefine[type][name];
+        return udefine.modules[type][name];
       }
     };
     udefine = function(name, deps, factory) {
-      var dep, depArr, injectName, injectRoot, result, _ref;
+      var dep, depArr, exportable, injectName, injectObject, injectRoot, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -80,9 +80,17 @@
         }
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
-        injectName = udefine.inject.modules[name].name;
-        injectRoot = udefine.inject.modules[name].root;
+        injectObject = udefine.inject.modules[name];
+        injectRoot = injectObject.root, injectName = injectObject.name, exportable = injectObject.exportable;
         udefine.inject(injectRoot, injectName)(result);
+        if (hasModule) {
+          if (exportable || exportable === 'all') {
+            module.exports = result;
+          }
+          if (exportable === 'partial') {
+            exports[injectName] = result;
+          }
+        }
       }
       return result;
     };

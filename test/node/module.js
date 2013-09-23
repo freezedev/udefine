@@ -8,10 +8,10 @@
   describe('udefine commonjs dependencies', function() {
     return it('multiple dependencies', function(done) {
       udefine.paths.commonjs.base = 'test/node';
-      udefine.commonjs = {
+      udefine.modules.add({
         dep1: './dep1',
         dep2: './dep2'
-      };
+      });
       return udefine('nodetest', ['dep1', 'dep2'], function(dep1, dep2) {
         var num;
 
