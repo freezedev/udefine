@@ -63,14 +63,17 @@ do (root = if hasModule then {} else this) ->
       if udefine.autoInject
         udefine.inject.add name, {root, name} if udefine.env.globals
         if udefine.env.commonjs
-          udefine.inject.add name, {root: module.exports, name}
+          udefine.inject.add name,
+            root: module.exports
+            name: name
+            ignoreName: true
         
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
       injectObject = udefine.inject.modules[name]
-      {root: injectRoot, name: injectName} = injectObject
+      {root: injectRoot, name: injectName, ignoreName} = injectObject
       
-      udefine.inject(injectRoot, injectName)(result)
+      udefine.inject(injectRoot, injectName, ignoreName)(result)
         
     result
   
@@ -78,9 +81,11 @@ do (root = if hasModule then {} else this) ->
   udefine.autoInject = true
   
   # Helper function to inject function/object into any object
-  udefine.inject = (obj, name) -> (res) ->
+  # TODO: Reflect if helper function should be exposed
+  udefine.inject = (obj, name, ignoreName) -> (res) ->
     return unless obj? and name?
-    obj[name] = res
+    
+    if ignoreName then obj = res else obj[name] = res
   
   udefine.inject.modules = {}
   
