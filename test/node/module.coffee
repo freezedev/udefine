@@ -1,7 +1,6 @@
 udefine = require '../../dist/udefine'
 {expect} = require 'chai'
 
-# TODO: This test is not working yet
 describe 'udefine commonjs dependencies', ->
   it 'multiple dependencies', (done) ->
     udefine.paths.commonjs.base = 'test/node'
