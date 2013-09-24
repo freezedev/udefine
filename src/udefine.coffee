@@ -54,20 +54,20 @@ do (root = if hasModule then {} else this) ->
       
       result = resolveModule factory, depArr
       
-      module.exports = result if hasModule
-      
       # Set dependency if it does not exist
       unless Object.hasOwnProperty.call udefine.modules[platform], name
         udefine.modules[platform][name] = result
-        
+    
+    # Automatically inject if property is set
+    unless Object.hasOwnProperty.call udefine.inject.modules, name
+      if udefine.autoInject
+        udefine.inject.add name, {root, name} if udefine.env.globals
+        if udefine.env.commonjs
+          udefine.inject.add name, {root: module.exports, name}
         
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
       injectObject = udefine.inject.modules[name]
-    else
-      if udefine.autoInject and udefine.env.globals
-        injectObject = {root, name}
-      
       {root: injectRoot, name: injectName} = injectObject
       
       udefine.inject(injectRoot, injectName)(result)
