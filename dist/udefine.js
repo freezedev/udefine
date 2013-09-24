@@ -48,7 +48,7 @@
       }
     };
     udefine = function(name, deps, factory) {
-      var dep, depArr, injectName, injectObject, injectRoot, result, _ref;
+      var dep, depArr, ignoreName, injectName, injectObject, injectRoot, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
@@ -90,25 +90,30 @@
           if (udefine.env.commonjs) {
             udefine.inject.add(name, {
               root: module.exports,
-              name: name
+              name: name,
+              ignoreName: true
             });
           }
         }
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
         injectObject = udefine.inject.modules[name];
-        injectRoot = injectObject.root, injectName = injectObject.name;
-        udefine.inject(injectRoot, injectName)(result);
+        injectRoot = injectObject.root, injectName = injectObject.name, ignoreName = injectObject.ignoreName;
+        udefine.inject(injectRoot, injectName, ignoreName)(result);
       }
       return result;
     };
     udefine.autoInject = true;
-    udefine.inject = function(obj, name) {
+    udefine.inject = function(obj, name, ignoreName) {
       return function(res) {
         if (!((obj != null) && (name != null))) {
           return;
         }
-        return obj[name] = res;
+        if (ignoreName) {
+          return obj = res;
+        } else {
+          return obj[name] = res;
+        }
       };
     };
     udefine.inject.modules = {};

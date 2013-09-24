@@ -30,6 +30,10 @@
       expect(udefine).to.have.property('env');
       return expect(envProp).to.be.a('object');
     });
+    it('udefine has a property .autoInject', function() {
+      expect(udefine).to.have.property('autoInject');
+      return expect(udefine.autoInject).to.be.a('boolean');
+    });
     it('udefine has module property', function() {
       expect(udefine).to.have.property('modules');
       return expect(udefine.modules).to.be.a('object');
