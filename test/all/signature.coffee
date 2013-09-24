@@ -24,6 +24,10 @@ describe 'udefine signature', ->
     
     expect(udefine).to.have.property('env')
     expect(envProp).to.be.a('object')
+  
+  it 'udefine has a property .autoInject', ->
+    expect(udefine).to.have.property('autoInject')
+    expect(udefine.autoInject).to.be.a('boolean')
     
   it 'udefine has module property', ->
     expect(udefine).to.have.property('modules')
