@@ -75,22 +75,28 @@
           return _results;
         })();
         result = resolveModule(factory, depArr);
-        if (hasModule) {
-          module.exports = result;
-        }
         if (!Object.hasOwnProperty.call(udefine.modules[platform], name)) {
           udefine.modules[platform][name] = result;
         }
       }
+      if (!Object.hasOwnProperty.call(udefine.inject.modules, name)) {
+        if (udefine.autoInject) {
+          if (udefine.env.globals) {
+            udefine.inject.add(name, {
+              root: root,
+              name: name
+            });
+          }
+          if (udefine.env.commonjs) {
+            udefine.inject.add(name, {
+              root: module.exports,
+              name: name
+            });
+          }
+        }
+      }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
         injectObject = udefine.inject.modules[name];
-      } else {
-        if (udefine.autoInject && udefine.env.globals) {
-          injectObject = {
-            root: root,
-            name: name
-          };
-        }
         injectRoot = injectObject.root, injectName = injectObject.name;
         udefine.inject(injectRoot, injectName)(result);
       }

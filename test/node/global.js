@@ -11,8 +11,9 @@
     it('udefine is bound to global', function() {
       return expect(global.udefine).to.be.a('function');
     });
-    it('return value of required global udefine is undefined', function() {
-      return expect(udefineGlobal).to.be('undefined');
+    it('return value of required global udefine is empty oject', function() {
+      expect(udefineGlobal).to.be.a('object');
+      return expect(udefineGlobal).to.be.empty;
     });
     it('udefine can be called without global prefix', function() {
       return expect(udefine).to.be.a('function');
