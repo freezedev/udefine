@@ -10,7 +10,7 @@
     };
   })();
 
-  hasModule = (typeof module !== "undefined" && module !== null) && (module.exports != null);
+  hasModule = !!((typeof module !== "undefined" && module !== null) && module.exports);
 
   exportObject = {};
 
@@ -48,10 +48,13 @@
       }
     };
     udefine = function(name, deps, factory) {
-      var dep, depArr, exportable, injectName, injectObject, injectRoot, result, _ref;
+      var dep, depArr, injectName, injectObject, injectRoot, result, _ref;
 
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
+      }
+      if (name !== name.toLowerCase()) {
+        console.warn('A module should be all lowercase');
       }
       if (typeof deps === 'function' || isObject(deps)) {
         _ref = [name, [], deps], name = _ref[0], deps = _ref[1], factory = _ref[2];
@@ -81,19 +84,19 @@
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
         injectObject = udefine.inject.modules[name];
-        injectRoot = injectObject.root, injectName = injectObject.name, exportable = injectObject.exportable;
-        udefine.inject(injectRoot, injectName)(result);
-        if (hasModule) {
-          if (exportable || exportable === 'all') {
-            module.exports = result;
-          }
-          if (exportable === 'partial') {
-            exports[injectName] = result;
-          }
+      } else {
+        if (udefine.autoInject && udefine.env.globals) {
+          injectObject = {
+            root: root,
+            name: name
+          };
         }
+        injectRoot = injectObject.root, injectName = injectObject.name;
+        udefine.inject(injectRoot, injectName)(result);
       }
       return result;
     };
+    udefine.autoInject = true;
     udefine.inject = function(obj, name) {
       return function(res) {
         if (!((obj != null) && (name != null))) {
@@ -214,7 +217,7 @@
     };
     udefine.defaultConfig();
     udefine.configure = function(configFunc) {
-      return configFunc.apply(udefine, [root]);
+      return configFunc.apply(udefine, [hasModule ? module.exports : root]);
     };
     if (hasModule) {
       return module.exports = udefine;

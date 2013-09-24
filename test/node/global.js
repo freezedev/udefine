@@ -1,15 +1,18 @@
 (function() {
-  var expect, udefineFunction;
+  var expect, udefineFunction, udefineGlobal;
 
   udefineFunction = require('../../dist/udefine');
 
-  require('../../dist/global');
+  udefineGlobal = require('../../dist/global');
 
   expect = require('chai').expect;
 
   describe('udefine global function', function() {
     it('udefine is bound to global', function() {
       return expect(global.udefine).to.be.a('function');
+    });
+    it('return value of required global udefine is undefined', function() {
+      return expect(udefineGlobal).to.be('undefined');
     });
     it('udefine can be called without global prefix', function() {
       return expect(udefine).to.be.a('function');
