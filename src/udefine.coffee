@@ -4,7 +4,7 @@
 do -> Array.isArray ?= (a) -> a.push is Array.prototype.push and a.length?
 
 # Module switch
-hasModule = module? and module.exports?
+hasModule = !!(module? and module.exports)
 exportObject = {}
 
 # Safe way to test against an object without array being a false positive
@@ -40,6 +40,9 @@ do (root = if hasModule then {} else this) ->
   udefine = (name, deps, factory) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
+    unless name is name.toLowerCase()
+      console.warn 'A module should be all lowercase'
+    
     if typeof deps is 'function' or isObject(deps)
       [name, deps, factory] = [name, [], deps]
       
@@ -61,16 +64,18 @@ do (root = if hasModule then {} else this) ->
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
       injectObject = udefine.inject.modules[name]
+    else
+      if udefine.autoInject and udefine.env.globals
+        injectObject = {root, name}
       
-      {root: injectRoot, name: injectName, exportable} = injectObject
+      {root: injectRoot, name: injectName} = injectObject
       
       udefine.inject(injectRoot, injectName)(result)
-      
-      if hasModule
-        if exportable or exportable is 'all' then module.exports = result
-        if exportable is 'partial' then exports[injectName] = result
         
     result
+  
+  # Allow auto injection of modules in a browser environment
+  udefine.autoInject = true
   
   # Helper function to inject function/object into any object
   udefine.inject = (obj, name) -> (res) ->
@@ -156,7 +161,7 @@ do (root = if hasModule then {} else this) ->
   
   # Configuration helper function
   udefine.configure = (configFunc) ->
-    configFunc.apply udefine, [root]
+    configFunc.apply udefine, [if hasModule then module.exports else root]
   
   # Export udefine function on CommonJS environments
   if hasModule then module.exports = udefine else root.udefine = udefine
