@@ -6,13 +6,16 @@ udefine
 
 Define an UMD module like an AMD module and use it (almost) anywhere
 
+**Why would you need it?**  
+- You are writing that needs to available in Node.js, AMD and/or as global objects  
+- You need some kind of basic dependency resolution for your modules  
 
 
 **Features**  
-- Provides a handy function wrapper for UMD modules
-- Same fuction signature as AMD modules
-- No need for boilerplate definitions
-- Less than 0.6 kB minified and gzipped (might increase a bit, but I'll keep it under 1kb)
+- Provides a handy function wrapper for UMD modules  
+- Same fuction signature as AMD modules  
+- No need for boilerplate definitions  
+- Less than 0.6 kB minified and gzipped (might increase a bit, but I'll keep it under 1kb)  
 
 **Usage**  
 ```javascript
