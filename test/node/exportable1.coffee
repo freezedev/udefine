@@ -9,6 +9,8 @@ describe 'udefine commonjs exportable', ->
       b: 4
       c: 3
     
+    module.exports = udefine.modules.commonjs.export1
+    
     expect(module.exports).to.be.a('object')
     expect(module.exports.a).to.be.a('number', 'Property "a" is not a number')
     expect(module.exports.b).to.be.a('number', 'Property "b" is not a number')
