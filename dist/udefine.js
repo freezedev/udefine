@@ -87,13 +87,14 @@
               name: name
             });
           }
-          if (udefine.env.commonjs) {
-            udefine.inject.add(name, {
-              root: module.exports,
-              name: name,
+          /*
+          if udefine.env.commonjs
+            udefine.inject.add name,
+              root: module.exports
+              name: name
               ignoreName: true
-            });
-          }
+          */
+
         }
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
@@ -228,7 +229,7 @@
     };
     udefine.defaultConfig();
     udefine.configure = function(configFunc) {
-      return configFunc.apply(udefine, [hasModule ? module.exports : root]);
+      return configFunc.apply(udefine, [root]);
     };
     if (hasModule) {
       return module.exports = udefine;
