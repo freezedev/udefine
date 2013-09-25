@@ -170,7 +170,13 @@ do (root = if hasModule then {} else this) ->
   udefine.defaultConfig()
   
   # Configuration helper function
-  udefine.configure = (configFunc) -> configFunc.apply udefine, [root]
+  udefine.configure = (configFunc) ->
+    context = {}
+    for own e of udefine.env
+      context[e] = (platformDef) =>
+        if udefine.env[e] then platformDef.call @
+  
+    configFunc.apply context, [udefine, root]
   
   # Export udefine function on CommonJS environments
   if hasModule then module.exports = udefine else root.udefine = udefine
