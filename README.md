@@ -38,12 +38,12 @@ a module the global namespace if there is no AMD or CommonJS?
 Just define where the module should be injected to and udefine will do the rest:
 
 ```javascript
-(function(root) {
-  root.udefine.inject['myothermodule'] = {
+udefine.configure(function(root) {
+  udefine.inject['myothermodule'] = {
     root: root,
     name: 'myOtherModule'
-  };
-})(this);
+  };  
+});
 
 udefine('myothermodule', function() {
   return {
@@ -56,6 +56,39 @@ udefine('myothermodule', function() {
 // (In a non-AMD or non-CommonJS environment.)
 ```
 
+**CommonJS pitfalls**  
+If using `module.exports` for exporting your modules on CommonJS, it does not
+export correctly on udefine 0.8.x.
+(Exporting with `exports` using the injection API works though.)
+To counteract this behavior, you would need a bit of boilerplate code:
+```javascript
+(function() {
+  udefine.configure(function(root) {
+    if (udefine.env.globals) {
+      udefine.inject['mycoolmodule'] = {
+        root: root,
+        name: 'myCoolModule'
+      };  
+    }
+  });
+
+
+  var modResult = udefine('mycoolmodule', function() {
+    return {
+      a: function() { return 5; },
+      b: 2
+    };
+  });
+
+  if (udefine.env.commonjs) {
+    module.exports = modResult;
+  }
+
+}).call(this);
+
+// root.myOtherModule now is an object with the properties a and b.
+// (In a non-AMD or non-CommonJS environment.)
+```
 
 udefine is not and does not replace a module loader. It is primarily intended for
 developers who want their library to target AMD modules, CommonJS modules and/or
