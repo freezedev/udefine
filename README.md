@@ -64,16 +64,16 @@ To counteract this behavior, you would need a bit of boilerplate code:
 ```javascript
 (function() {
   udefine.configure(function(root) {
-    if (udefine.env.globals) {
+    this.globals(function() {
       udefine.inject['mycoolmodule'] = {
         root: root,
         name: 'myCoolModule'
       };  
-    }
+    });
   });
 
 
-  var modResult = udefine('mycoolmodule', function() {
+  udefine('mycoolmodule', function() {
     return {
       a: function() { return 5; },
       b: 2
@@ -81,7 +81,9 @@ To counteract this behavior, you would need a bit of boilerplate code:
   });
 
   if (udefine.env.commonjs) {
-    module.exports = modResult;
+    udefine.require('mycoolmodule', function(myCoolModule) {
+      module.exports = myCoolModule;
+    });
   }
 
 }).call(this);
