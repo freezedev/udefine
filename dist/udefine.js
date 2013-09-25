@@ -1,6 +1,7 @@
 (function() {
   'use strict';
-  var exportObject, hasModule, isObject;
+  var exportObject, hasModule, isObject,
+    __hasProp = {}.hasOwnProperty;
 
   (function() {
     var _ref;
@@ -229,7 +230,20 @@
     };
     udefine.defaultConfig();
     udefine.configure = function(configFunc) {
-      return configFunc.apply(udefine, [root]);
+      var context, e, _ref,
+        _this = this;
+
+      context = {};
+      _ref = udefine.env;
+      for (e in _ref) {
+        if (!__hasProp.call(_ref, e)) continue;
+        context[e] = function(platformDef) {
+          if (udefine.env[e]) {
+            return platformDef.call(_this);
+          }
+        };
+      }
+      return configFunc.apply(context, [udefine, root]);
     };
     if (hasModule) {
       return module.exports = udefine;
