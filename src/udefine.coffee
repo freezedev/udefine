@@ -176,7 +176,7 @@ do (root = if hasModule then {} else this) ->
       context[e] = (platformDef) =>
         if udefine.env[e] then platformDef.call @
   
-    configFunc.apply context, [udefine, root]
+    configFunc.apply context, [root, udefine]
   
   # Export udefine function on CommonJS environments
   if hasModule then module.exports = udefine else root.udefine = udefine
