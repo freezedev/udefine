@@ -160,6 +160,13 @@ do (root = if hasModule then {} else this) ->
     commonjs:
       base: undefined
   
+  # Require modules
+  udefine.require = (name, callback) ->
+    name = [name] unless Array.isArray name
+    
+    reqDeps = (udefine.modules.get n for n in name)
+    callback.apply @, reqDeps
+  
   # Default configuration definition
   udefine.defaultConfig = ->
     udefine.modules.commonjs.root = root
