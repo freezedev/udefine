@@ -7,16 +7,16 @@
 
   describe('udefine commonjs exportable', function() {
     return it('module.exports', function() {
-      var exportResult;
-
-      exportResult = udefine('export1', function() {
+      udefine('export1', function() {
         return {
           a: 5,
           b: 4,
           c: 3
         };
       });
-      module.exports = exportResult;
+      udefine.require('export1', function(export1) {
+        return module.exports = export1;
+      });
       expect(module.exports).to.be.a('object');
       expect(module.exports.a).to.be.a('number', 'Property "a" is not a number');
       expect(module.exports.b).to.be.a('number', 'Property "b" is not a number');

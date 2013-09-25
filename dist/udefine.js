@@ -220,6 +220,24 @@
         base: void 0
       }
     };
+    udefine.require = function(name, callback) {
+      var n, reqDeps;
+
+      if (!Array.isArray(name)) {
+        name = [name];
+      }
+      reqDeps = (function() {
+        var _i, _len, _results;
+
+        _results = [];
+        for (_i = 0, _len = name.length; _i < _len; _i++) {
+          n = name[_i];
+          _results.push(udefine.modules.get(n));
+        }
+        return _results;
+      })();
+      return callback.apply(this, reqDeps);
+    };
     udefine.defaultConfig = function() {
       udefine.modules.commonjs.root = root;
       if (root.define != null) {
