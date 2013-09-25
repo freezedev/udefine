@@ -62,12 +62,17 @@ do (root = if hasModule then {} else this) ->
     unless Object.hasOwnProperty.call udefine.inject.modules, name
       if udefine.autoInject
         udefine.inject.add name, {root, name} if udefine.env.globals
+        
+        # Auto injection does not work on CommonJS
+        # TODO: Need to investigate if it's even possible
+        ###
         if udefine.env.commonjs
           udefine.inject.add name,
             root: module.exports
             name: name
             ignoreName: true
-        
+        ###
+    
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
       injectObject = udefine.inject.modules[name]
@@ -165,8 +170,7 @@ do (root = if hasModule then {} else this) ->
   udefine.defaultConfig()
   
   # Configuration helper function
-  udefine.configure = (configFunc) ->
-    configFunc.apply udefine, [if hasModule then module.exports else root]
+  udefine.configure = (configFunc) -> configFunc.apply udefine, [root]
   
   # Export udefine function on CommonJS environments
   if hasModule then module.exports = udefine else root.udefine = udefine
