@@ -4,12 +4,12 @@ udefine = require '../../dist/udefine'
 describe 'udefine commonjs exportable', ->
   it 'module.exports', ->
     
-    exportResult = udefine 'export1', ->
+    udefine 'export1', ->
       a: 5
       b: 4
       c: 3
     
-    module.exports = exportResult
+    udefine.require 'export1', (export1) -> module.exports = export1
     
     expect(module.exports).to.be.a('object')
     expect(module.exports.a).to.be.a('number', 'Property "a" is not a number')
