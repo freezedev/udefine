@@ -243,7 +243,7 @@
           }
         };
       }
-      return configFunc.apply(context, [udefine, root]);
+      return configFunc.apply(context, [root, udefine]);
     };
     if (hasModule) {
       return module.exports = udefine;
