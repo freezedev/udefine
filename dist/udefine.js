@@ -240,6 +240,7 @@
     };
     udefine.defaultConfig = function() {
       udefine.modules.commonjs.root = root;
+      udefine.modules.globals.root = root;
       if (root.define != null) {
         return define('root', function() {
           return root;
