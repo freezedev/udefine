@@ -170,6 +170,7 @@ do (root = if hasModule then {} else this) ->
   # Default configuration definition
   udefine.defaultConfig = ->
     udefine.modules.commonjs.root = root
+    udefine.modules.globals.root = root
   
     define('root', -> root) if root.define?
   
