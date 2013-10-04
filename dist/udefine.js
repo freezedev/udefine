@@ -112,9 +112,9 @@
           return;
         }
         if (ignoreName) {
-          return obj = res;
+          return obj || (obj = res);
         } else {
-          return obj[name] = res;
+          return obj[name] || (obj[name] = res);
         }
       };
     };
