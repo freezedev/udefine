@@ -90,7 +90,7 @@ do (root = if hasModule then {} else this) ->
   udefine.inject = (obj, name, ignoreName) -> (res) ->
     return unless obj? and name?
     
-    if ignoreName then obj = res else obj[name] = res
+    if ignoreName then obj or= res else obj[name] or= res
   
   udefine.inject.modules = {}
   
