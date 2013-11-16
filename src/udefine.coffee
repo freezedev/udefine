@@ -36,8 +36,7 @@ do (root = if hasModule then {} else this) ->
     else
       udefine.modules[type][name]
   
-  # Main entry point
-  udefine = (name, deps, factory) ->
+  udefinable = (name, deps, factory, exportable) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
     unless name is name.toLowerCase()
@@ -60,18 +59,21 @@ do (root = if hasModule then {} else this) ->
     
     # Automatically inject if property is set
     unless Object.hasOwnProperty.call udefine.inject.modules, name
-      if udefine.autoInject
-        udefine.inject.add name, {root, name} if udefine.env.globals
-        
-        # Auto injection does not work on CommonJS
-        # TODO: Need to investigate if it's even possible
-        ###
-        if udefine.env.commonjs
-          udefine.inject.add name,
-            root: module.exports
-            name: name
-            ignoreName: true
-        ###
+      if exportable
+        udefine.inject.add name,
+          root: exportable
+          name: name
+          ignoreName: true
+      else
+        if udefine.autoInject
+          udefine.inject.add name, {root, name} if udefine.env.globals
+          
+          # Auto injection does not work on CommonJS
+          if udefine.env.commonjs
+            udefine.inject.add name,
+              root: exports
+              name: name
+              ignoreName: true
     
     # Inject result into defined namespace
     if Object.hasOwnProperty.call udefine.inject.modules, name
@@ -81,6 +83,9 @@ do (root = if hasModule then {} else this) ->
       udefine.inject(injectRoot, injectName, ignoreName)(result)
         
     result
+  
+  # Main entry point
+  udefine = (name, deps, factory) -> udefinable name, deps, factory
   
   # Allow auto injection of modules in a browser environment
   udefine.autoInject = true
@@ -185,6 +190,10 @@ do (root = if hasModule then {} else this) ->
         if udefine.env[e] then platformDef.call @
   
     configFunc.apply context, [root, udefine]
+  
+  # Export function, espacially for CommonJS
+  udefine.export = -> (exportable) ->
+    udefinable name, deps, factory, exportable
   
   # Export udefine function on CommonJS environments
   if hasModule then module.exports = udefine else root.udefine = udefine
