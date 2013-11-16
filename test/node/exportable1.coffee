@@ -1,15 +1,14 @@
 udefine = require '../../dist/udefine'
+udefineExport = udefine module.exports
 {expect} = require 'chai'
 
 describe 'udefine commonjs exportable', ->
   it 'module.exports', ->
     
-    udefine 'export1', ->
+    udefineExport 'export1', ->
       a: 5
       b: 4
       c: 3
-    
-    udefine.require 'export1', (export1) -> module.exports = export1
     
     expect(module.exports).to.be.a('object')
     expect(module.exports.a).to.be.a('number', 'Property "a" is not a number')
