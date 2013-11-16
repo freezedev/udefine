@@ -85,4 +85,4 @@ module.exports = (grunt) ->
     'mocha'
   ]
   
-  grunt.registerTask 'default', 'Default task', ['coffee:app', 'uglify', 'test']
+  grunt.registerTask 'default', 'Default task', ['coffee', 'test', 'uglify']
