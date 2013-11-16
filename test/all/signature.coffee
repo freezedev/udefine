@@ -87,3 +87,7 @@ describe 'udefine signature', ->
     expect(udefine).to.have.property('defaultConfig')
     expect(defConProp).to.be.a('function')
 
+  it 'udefine has property .export', ->
+    expect(udefine).to.have.property 'export'
+    expect(udefine.export).to.be.a 'function'
+    expect(udefine.export({})).to.be.a 'function'
