@@ -1,2 +1,2 @@
 udefine = require './udefine'
-module.exports = udefine.export
+module.exports = udefine.exports
