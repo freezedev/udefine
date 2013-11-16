@@ -192,7 +192,7 @@ do (root = if hasModule then {} else this) ->
     configFunc.apply context, [root, udefine]
   
   # Export function, espacially for CommonJS
-  udefine.export = -> (exportable) ->
+  udefine.export = (exportable) -> (name, deps, factory) ->
     udefinable name, deps, factory, exportable
   
   # Export udefine function on CommonJS environments
