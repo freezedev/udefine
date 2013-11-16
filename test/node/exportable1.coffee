@@ -1,5 +1,5 @@
 udefine = require '../../dist/udefine'
-udefineExport = udefine.export module.exports
+udefineExport = udefine.exports module.exports
 {expect} = require 'chai'
 
 describe 'udefine commonjs exportable', ->
