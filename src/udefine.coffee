@@ -39,6 +39,8 @@ do (root = if hasModule then {} else this) ->
   udefinable = (name, deps, factory, exportable) ->
     throw new Error 'A udefine module needs to have a name' unless name?
     
+    throw new Error 'Anonymous module are not allowed' if Array.isArray name
+    
     unless name is name.toLowerCase()
       console.warn 'A module should be all lowercase'
     
