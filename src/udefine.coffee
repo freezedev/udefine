@@ -150,7 +150,7 @@ do (root = if hasModule then {} else this) ->
   
   # Default settings for udefine environment
   udefine.env or=
-    amd: do -> define? and (define.amd or define.umd)
+    amd: do -> !!(define? and (define.amd or define.umd))
     commonjs: hasModule
     browser: not hasModule
     globals: not hasModule and not udefine.amd
