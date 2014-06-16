@@ -23,14 +23,12 @@
     });
     it('udefine.inject called without name does not modify the object', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj)();
       return expect(obj).to.be.empty;
     });
     it('udefine.inject adding an undefined value', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '1')();
       expect(obj).to.have.ownProperty('1');
@@ -38,7 +36,6 @@
     });
     it('udefine.inject adding a null value', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '2')(null);
       expect(obj).to.have.property('2');
@@ -47,7 +44,6 @@
     });
     it('udefine.inject adding an string value', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '3')('test');
       expect(obj).to.have.property('3');
@@ -57,7 +53,6 @@
     });
     it('udefine.inject adding a number value', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '4')(4);
       expect(obj).to.have.property('4');
@@ -67,7 +62,6 @@
     });
     it('udefine.inject adding a boolean value', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '5')(true);
       expect(obj).to.have.property('5');
@@ -76,7 +70,6 @@
     });
     it('udefine.inject adding an object', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '6')({});
       expect(obj).to.have.property('6');
@@ -86,7 +79,6 @@
     });
     it('udefine.inject adding an array', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '7')([]);
       expect(obj).to.have.property('7');
@@ -96,7 +88,6 @@
     });
     return it('udefine.inject adding a function', function() {
       var obj;
-
       obj = {};
       udefine.inject(obj, '8')(function() {});
       expect(obj).to.have.property('8');

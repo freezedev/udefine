@@ -15,7 +15,6 @@
   describe('udefine module definition', function() {
     it('udefine without dependencies (object factory)', function() {
       var resProp;
-
       udefine('abc', {
         a: 5,
         b: 4,
@@ -32,7 +31,6 @@
     });
     it('udefine without dependencies (function factory)', function() {
       var resProp;
-
       udefine('def', function() {
         return 42;
       });
@@ -42,7 +40,6 @@
     });
     it('udefine module (object) definition with injection', function() {
       var injectObj;
-
       injectObj = {};
       udefine.inject.add('ghi', {
         root: injectObj,
@@ -64,7 +61,6 @@
     });
     it('udefine module (function) definition with injection', function() {
       var injectObj;
-
       injectObj = {};
       udefine.inject.add('jkl', {
         root: injectObj,
@@ -85,7 +81,6 @@
     });
     it('udefine module definition with injection (module !== injection)', function() {
       var injectObj;
-
       injectObj = {};
       udefine.inject.add('mno', {
         root: injectObj,
@@ -102,7 +97,6 @@
     });
     it('udefine module definition with injection shorthand', function() {
       var injectObj;
-
       injectObj = {};
       udefine.inject.add('pqr', {
         root: injectObj

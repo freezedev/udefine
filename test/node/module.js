@@ -14,7 +14,6 @@
       });
       return udefine('nodetest', ['dep1', 'dep2'], function(dep1, dep2) {
         var num;
-
         expect(dep1).to.be.a('object');
         expect(dep1).to.have.property('number');
         expect(dep2).to.be.a('function');
