@@ -14,7 +14,6 @@
 
   describe('udefine environment variables', function() {
     var envProp;
-
     envProp = udefine.env;
     it('udefine.env has commonjs property', function() {
       return expect(envProp).to.have.property('commonjs');

@@ -4,9 +4,7 @@
     __hasProp = {}.hasOwnProperty;
 
   (function() {
-    var _ref;
-
-    return (_ref = Array.isArray) != null ? _ref : Array.isArray = function(a) {
+    return Array.isArray != null ? Array.isArray : Array.isArray = function(a) {
       return a.push === Array.prototype.push && (a.length != null);
     };
   })();
@@ -21,7 +19,6 @@
 
   (function(root) {
     var loadModule, platform, platforms, resolveModule, udefine;
-
     platforms = ['commonjs', 'globals'];
     platform = hasModule ? 'commonjs' : 'globals';
     resolveModule = function(factory, deps) {
@@ -32,9 +29,16 @@
       }
     };
     loadModule = function(name, type) {
-      var path, prePath;
-
+      var packageModule, path, prePath;
       if (hasModule && typeof udefine.modules[type][name] === 'string') {
+        packageModule = (function() {
+          try {
+            return require(udefine.modules[type][name]);
+          } catch (_error) {}
+        })();
+        if (packageModule != null) {
+          return packageModule;
+        }
         path = require('path');
         prePath = (function() {
           if (udefine.paths[type].base) {
@@ -50,7 +54,6 @@
     };
     udefine = function(name, deps, factory) {
       var dep, depArr, ignoreName, injectName, injectObject, injectRoot, result, _ref;
-
       if (name == null) {
         throw new Error('A udefine module needs to have a name');
       }
@@ -67,7 +70,6 @@
       } else {
         depArr = (function() {
           var _i, _len, _results;
-
           _results = [];
           for (_i = 0, _len = deps.length; _i < _len; _i++) {
             dep = deps[_i];
@@ -88,14 +90,14 @@
               name: name
             });
           }
+
           /*
           if udefine.env.commonjs
             udefine.inject.add name,
               root: module.exports
               name: name
               ignoreName: true
-          */
-
+           */
         }
       }
       if (Object.hasOwnProperty.call(udefine.inject.modules, name)) {
@@ -148,7 +150,6 @@
       commonjs: {},
       add: function(name, value) {
         var key, v, val, _i, _len;
-
         if (typeof name === 'object') {
           for (key in name) {
             val = name[key];
@@ -172,7 +173,6 @@
       },
       remove: function(name) {
         var p, _i, _len;
-
         for (_i = 0, _len = platforms.length; _i < _len; _i++) {
           p = platforms[_i];
           if (Object.hasOwnProperty.call(udefine.modules[p], name)) {
@@ -186,7 +186,6 @@
       },
       set: function(name, value) {
         var k, v;
-
         if (typeof value === 'object') {
           for (k in value) {
             v = value[k];
@@ -199,7 +198,6 @@
       },
       clear: function() {
         var p, _i, _len;
-
         for (_i = 0, _len = platforms.length; _i < _len; _i++) {
           p = platforms[_i];
           udefine.modules[p] = {};
@@ -209,7 +207,7 @@
     };
     udefine.env || (udefine.env = {
       amd: (function() {
-        return (typeof define !== "undefined" && define !== null) && (define.amd || define.umd);
+        return !!((typeof define !== "undefined" && define !== null) && (define.amd || define.umd));
       })(),
       commonjs: hasModule,
       browser: !hasModule,
@@ -222,13 +220,11 @@
     };
     udefine.require = function(name, callback) {
       var n, reqDeps;
-
       if (!Array.isArray(name)) {
         name = [name];
       }
       reqDeps = (function() {
         var _i, _len, _results;
-
         _results = [];
         for (_i = 0, _len = name.length; _i < _len; _i++) {
           n = name[_i];
@@ -249,18 +245,18 @@
     };
     udefine.defaultConfig();
     udefine.configure = function(configFunc) {
-      var context, e, _ref,
-        _this = this;
-
+      var context, e, _ref;
       context = {};
       _ref = udefine.env;
       for (e in _ref) {
         if (!__hasProp.call(_ref, e)) continue;
-        context[e] = function(platformDef) {
-          if (udefine.env[e]) {
-            return platformDef.call(_this);
-          }
-        };
+        context[e] = (function(_this) {
+          return function(platformDef) {
+            if (udefine.env[e]) {
+              return platformDef.call(_this);
+            }
+          };
+        })(this);
       }
       return configFunc.apply(context, [root, udefine]);
     };

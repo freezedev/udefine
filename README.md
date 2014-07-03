@@ -100,3 +100,6 @@ For more examples, take a look at the *examples* folder.
 
 **License**  
 This is public domain. See *UNLICENSE.md* for more information.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freezedev/udefine/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
