@@ -1,21 +1,20 @@
 (function() {
-  var expect, udefine;
+  var expect, udefine, udefineExport;
 
   udefine = require('../../dist/udefine');
+
+  udefineExport = udefine.exports(module.exports);
 
   expect = require('chai').expect;
 
   describe('udefine commonjs exportable', function() {
     return it('module.exports', function() {
-      udefine('export1', function() {
+      udefineExport('export1', function() {
         return {
           a: 5,
           b: 4,
           c: 3
         };
-      });
-      udefine.require('export1', function(export1) {
-        return module.exports = export1;
       });
       expect(module.exports).to.be.a('object');
       expect(module.exports.a).to.be.a('number', 'Property "a" is not a number');

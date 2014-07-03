@@ -18,12 +18,14 @@
     });
     it('udefine has a property .configure', function() {
       var configProp;
+
       configProp = udefine.configure;
       expect(udefine).to.have.property('configure');
       return expect(configProp).to.be.a('function');
     });
     it('udefine has a property .env', function() {
       var envProp;
+
       envProp = udefine.env;
       expect(udefine).to.have.property('env');
       return expect(envProp).to.be.a('object');
@@ -64,6 +66,7 @@
     });
     it('udefine has a property .inject', function() {
       var injectProp;
+
       injectProp = udefine.inject;
       expect(udefine).to.have.property('inject');
       return expect(injectProp).to.be.a('function');
@@ -80,11 +83,17 @@
       expect(udefine.inject).to.have.property('clear');
       return expect(udefine.inject.clear).to.be.a('function');
     });
-    return it('udefine has a property .defaultConfig', function() {
+    it('udefine has a property .defaultConfig', function() {
       var defConProp;
+
       defConProp = udefine.defaultConfig;
       expect(udefine).to.have.property('defaultConfig');
       return expect(defConProp).to.be.a('function');
+    });
+    return it('udefine has property .exports', function() {
+      expect(udefine).to.have.property('exports');
+      expect(udefine.exports).to.be.a('function');
+      return expect(udefine.exports({})).to.be.a('function');
     });
   });
 
