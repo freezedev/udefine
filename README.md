@@ -6,6 +6,9 @@ udefine
 
 Define an UMD module like an AMD module and use it (almost) anywhere
 
+This repository is deprecated and will not be updated any more. While it may have been a valid option three years ago (and we used it in production), you may want to use Webpack or rollup today.
+If you wish to maintain it further, contact me and I'll happily transfer the repository over to your account.
+
 **Why would you need it?**  
 - You are writing that needs to available in Node.js, AMD and/or as global objects  
 - You need some kind of basic dependency resolution for your modules  
