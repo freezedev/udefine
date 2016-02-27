@@ -4,7 +4,7 @@ udefine
 [![Dependency Status](https://david-dm.org/freezedev/udefine.png)](https://david-dm.org/freezedev/udefine)
 [![devDependency Status](https://david-dm.org/freezedev/udefine/dev-status.png)](https://david-dm.org/freezedev/udefine#info=devDependencies)
 
-This library is _deprecated_. For alternatives, please use a bundler like [Webpack](https://github.com/webpack/webpack) or [http://browserify.org/](browserify).
+This library is _deprecated_. For alternatives, please use a bundler like [Webpack](https://github.com/webpack/webpack) or [browserify](http://browserify.org/).
 
 Define an UMD module like an AMD module and use it (almost) anywhere
 
